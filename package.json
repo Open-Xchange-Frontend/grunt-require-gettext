@@ -1,0 +1,48 @@
+{
+  "name": "grunt-require-gettext",
+  "description": "Grunt plugin to process js files and extract calls to gettext that is used with a requirejs gettext module.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/open-xchange-frontend/grunt-require-gettext",
+  "author": {
+    "name": "Julian Bäume",
+    "email": "julian@svg4all.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-xchange-frontend/grunt-require-gettext"
+  },
+  "bugs": {
+    "url": "https://github.com/open-xchange-frontend/grunt-require-gettext/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/open-xchange-frontend/grunt-require-gettext/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt": "~0.4.2",
+    "grunt-mocha-test": "~0.8.1",
+    "chai": "~1.8.1",
+    "chai-fs": "0.0.3",
+    "chai-things": "~0.2.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "dependencies": {
+    "pofile": "~0.2.2",
+    "esprima": "~1.0.4"
+  }
+}
