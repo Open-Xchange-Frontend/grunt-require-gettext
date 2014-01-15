@@ -60,6 +60,11 @@ module.exports = function (grunt) {
                 files: {
                     'tmp/i18n/simple.pot': ['spec/fixtures/simpleModule.js']
                 },
+            },
+            nested: {
+                files: {
+                    'tmp/i18n/nested.pot': ['spec/fixtures/nestedModules.js']
+                }
             }
         },
 
