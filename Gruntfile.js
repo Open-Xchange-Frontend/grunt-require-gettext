@@ -19,7 +19,7 @@ module.exports = function (grunt) {
             },
             all: {
                 files: ['spec/**/*_spec.js', 'tasks/*.js', 'Gruntfile.js'],
-                tasks: ['jshint', 'create_pot', 'mochaTest']
+                tasks: ['jshint', 'create_pot', 'compile_po', 'mochaTest']
             }
         },
         jshint: {
@@ -63,6 +63,15 @@ module.exports = function (grunt) {
             }
         },
 
+        compile_po: {
+            simple: {
+                files: [{
+                    src: ['spec/fixtures/**/*.po'],
+                    dest: 'tmp/build/i18n/'
+                }]
+            }
+        },
+
         // Unit tests.
         mochaTest: {
             tests: {
@@ -86,7 +95,7 @@ module.exports = function (grunt) {
 
     // Whenever the "test" task is run, first clean the "tmp" dir, then run this
     // plugin's task(s), then test the result.
-    grunt.registerTask('test', ['clean', 'create_pot', 'mochaTest']);
+    grunt.registerTask('test', ['clean', 'create_pot', 'compile_po', 'mochaTest']);
 
     // By default, lint and run all tests.
     grunt.registerTask('default', ['jshint', 'test']);
