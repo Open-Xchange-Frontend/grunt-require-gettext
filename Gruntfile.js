@@ -25,12 +25,12 @@ module.exports = function (grunt) {
                     jshintrc: 'spec/.jshintrc'
                 },
                 src: ['spec/**/*_spec.js']
-            },
+            }
         },
 
         // Before generating any new files, remove any previously-created files.
         clean: {
-            tests: ['tmp'],
+            tests: ['tmp']
         },
 
         // Configuration to be run (and then tested).
@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                     }
                 },
                 files: {
-                    'tmp/i18n/simple.pot': ['spec/fixtures/simpleModule.js'],
+                    'tmp/i18n/simple.pot': ['spec/fixtures/simpleModule.js']
                 },
             }
         },
