@@ -12,6 +12,16 @@ module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
+        watch: {
+            options: {
+                interrupt: true,
+                spawn: true
+            },
+            all: {
+                files: ['spec/**/*_spec.js', 'tasks/*.js', 'Gruntfile.js'],
+                tasks: ['create_pot', 'mochaTest']
+            }
+        },
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
@@ -71,6 +81,7 @@ module.exports = function (grunt) {
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-mocha-test');
 
     // Whenever the "test" task is run, first clean the "tmp" dir, then run this
