@@ -1,0 +1,24 @@
+# Julian Bäume <julian.baeume@open-xchange.com>, 2014.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Julian Bäume <julian.baeume@open-xchange.com>\n"
+"PO-Revision-Date: 2014-01-15 14:13+0100\n"
+"Project-Id-Version: \n"
+"Language-Team: German <julian.baeume@open-xchange.com>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: spec/fixtures/simpleModule.js:12
+#: module:test/mySimpleModule
+msgid "translate me!"
+msgstr "übersetze mich!"
+
+#: spec/fixtures/simpleModule.js:13
+#: module:test/alternativeGTModule
+msgid "translate me, too! Alternatively!"
+msgstr "übersetze auch mich! Alternativ!"
+
