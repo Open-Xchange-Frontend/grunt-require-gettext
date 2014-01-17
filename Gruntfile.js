@@ -69,6 +69,15 @@ module.exports = function (grunt) {
                     src: ['spec/fixtures/**/*.po'],
                     dest: 'tmp/build/i18n/'
                 }]
+            },
+            custom_template: {
+                options: {
+                    template: 'spec/fixtures/templates/custom.tpl'
+                },
+                files: [{
+                    src: ['spec/fixtures/**/*.po'],
+                    dest: 'tmp/build/i18n/custom/'
+                }]
             }
         },
 

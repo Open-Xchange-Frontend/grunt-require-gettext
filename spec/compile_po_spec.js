@@ -26,5 +26,11 @@ describe('compile po file', function () {
                 }
             );
         });
+        it('should render with custom template', function (done) {
+            var translation = JSON.parse(grunt.file.read('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js'));
+            expect('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js').to.be.a.file().and.not.empty;
+            expect(translation['translate me!'][0]).to.equal('übersetze mich!');
+            done();
+        });
     });
 });

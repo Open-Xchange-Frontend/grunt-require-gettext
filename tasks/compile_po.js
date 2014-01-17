@@ -15,6 +15,7 @@ module.exports = function (grunt) {
         var PO = require('pofile');
         var _ = require('lodash');
         var dest = this.files[0].dest;
+        var options = this.options;
 
         grunt.file.mkdir(dest);
         if (this.files.length > 1 || !grunt.file.isDir(dest)) {
@@ -25,8 +26,13 @@ module.exports = function (grunt) {
         this.files[0].src.filter(function (srcFile) {
             return srcFile.substr(-3) === '.po';
         }).forEach(function (poFile) {
+            var fromFile;
+            var templateFile = options().template;
+            if (templateFile && grunt.file.isFile(templateFile)) {
+                fromFile = grunt.file.read(templateFile);
+            }
             /* jshint multistr: true */
-            var template =
+            var template = fromFile ||
 'define("<%= module %>.<%= language %>", [], function () {\n\
     return {\n\
         "module": "<%= module %>",\n\
