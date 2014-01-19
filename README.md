@@ -17,6 +17,56 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-require-gettext');
 ```
 
+As a first example, this projects’s `Gruntfile.js` does contain some tasks, that will compile the test files from `spec/` directory.
+Use these as a first start.
+
+## The "compile_po" task
+
+In your project's Gruntfile, add a section named `compile_po` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  compile_po: {
+    options: {
+      // Task-specific options go here.
+    },
+    your_target: {
+      // Target-specific file lists and/or options go here.
+    }
+  }
+});
+```
+
+### Options
+
+#### options.template
+Type: `String`
+Default value: `null`
+
+A path to a template file containing an underscore/lodash compatible template. If template is empty, the default template will be used:
+
+```js
+define("<%= module %>.<%= language %>", [], function () {
+    return {
+        "module": "<%= module %>",
+        "language": "<%= language %>",
+        "nplurals": <%= nplurals %>,
+        "plural": "<%= plural %>",
+        "dictionary": {
+<% for (var msgid in dictionary) {%>
+            "<%= msgid %>": "<%= dictionary[msgid] %>",
+<% } %>
+        }
+    };
+});';
+```
+
+#### files format
+
+Since the compile_po task will extract a module name from the reference comments of the translated string (it will be inserted there by
+the create_pot task), there will most likely be more modules created, than po files as sources. Therefor the destination of the files
+given _must_ be a directory. The task will fail if this is not the case.
+
 ## The "create_pot" task
 
 ### Overview
@@ -56,4 +106,14 @@ Headers that should be added to the pot file.
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+
+### 0.1.1
+
+- more verbose output on errors
+- documentation fixes
+
+### 0.1.0
+
+- first working version with basically two tasks
+    * create_pot - extract strings from all js files and create a po template (pot) from it
+    * compile_po - convert translated po files into loadable require-js modules
