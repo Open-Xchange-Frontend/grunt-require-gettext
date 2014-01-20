@@ -59,10 +59,10 @@ module.exports = function (grunt) {
                     })[0];
 
                     if (!module) {
-                        grunt.log.error('Failing item:');
-                        grunt.log.error(item);
-                        grunt.log.error('in file', poFile);
-                        grunt.fail.fatal('Could not extract module name for string');
+                        grunt.log.warn('Ignoring item (no module found): ' + item.msgid);
+                        grunt.verbose.warn(item);
+                        grunt.verbose.warn('in file', poFile);
+                        return;
                     }
                     module = module.substr(7);
 
