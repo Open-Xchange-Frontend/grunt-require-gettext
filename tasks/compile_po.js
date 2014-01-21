@@ -56,7 +56,15 @@ module.exports = function (grunt) {
                 po.items.forEach(function (item) {
                     var module = item.references.filter(function (ref) {
                         return ref.substr(0, 7) === 'module:';
-                    })[0].substr(7);
+                    })[0];
+
+                    if (!module) {
+                        grunt.log.warn('Ignoring item (no module found): ' + item.msgid);
+                        grunt.verbose.warn(item);
+                        grunt.verbose.warn('in file', poFile);
+                        return;
+                    }
+                    module = module.substr(7);
 
                     module = module;
                     if (!modules[module]) {

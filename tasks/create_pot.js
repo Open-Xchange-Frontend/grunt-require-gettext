@@ -56,6 +56,11 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length
                             ) {
+                                if (!node['arguments'][0].value) {
+                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'][0], null, 4));
+                                    grunt.verbose.writeln('Skipping gt call');
+                                    return;
+                                }
                                 items = items || [];
                                 items.push({
                                     msgId: node['arguments'][0].value.trim(),
@@ -74,7 +79,7 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('create_pot', 'Extract calls to gettext that is used with a requirejs gettext module.', function () {
         var PO = require('pofile');
-        var options = this.options;
+        var options = this.options();
 
         this.files.forEach(function (file) {
             var poItems;
@@ -82,10 +87,15 @@ module.exports = function (grunt) {
             poItems = file.src.filter(function (srcFile) {
                 return srcFile.substr(-3) === '.js';
             }).map(function (srcFile) {
-                return extractStrings(srcFile);
-            }).reduce(function (acc, items) {
+                return {srcFile: srcFile, items: extractStrings(srcFile)};
+            }).reduce(function (acc, result) {
                 if (!acc) {
                     return;
+                }
+                var items = result.items;
+                if (!items) {
+                    items = [];
+                    grunt.log.debug('No strings extracted from file ' + result.srcFile);
                 }
                 items.forEach(function (item) {
                     if (!acc[item.msgId]) {
@@ -108,6 +118,9 @@ module.exports = function (grunt) {
                 var catalog = new PO();
                 for (var key in poItems) {
                     catalog.items.push(poItems[key]);
+                }
+                if (options.headers) {
+                    grunt.verbose.writeln('Writing custom headers: ' + JSON.stringify(options.headers, null, 4));
                 }
                 catalog.headers = options.headers || {
                     'Content-Type': 'text/plain; charset=UTF-8',
