@@ -95,7 +95,7 @@ module.exports = function (grunt) {
                 var items = result.items;
                 if (!items) {
                     items = [];
-                    grunt.debug.writeln('No strings extracted from file ' + result.srcFile);
+                    grunt.log.debug('No strings extracted from file ' + result.srcFile);
                 }
                 items.forEach(function (item) {
                     if (!acc[item.msgId]) {
@@ -118,6 +118,9 @@ module.exports = function (grunt) {
                 var catalog = new PO();
                 for (var key in poItems) {
                     catalog.items.push(poItems[key]);
+                }
+                if (options.headers) {
+                    grunt.verbose.writeln('Writing custom headers: ' + JSON.stringify(options.headers, null, 4));
                 }
                 catalog.headers = options.headers || {
                     'Content-Type': 'text/plain; charset=UTF-8',
