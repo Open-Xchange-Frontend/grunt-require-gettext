@@ -87,10 +87,15 @@ module.exports = function (grunt) {
             poItems = file.src.filter(function (srcFile) {
                 return srcFile.substr(-3) === '.js';
             }).map(function (srcFile) {
-                return extractStrings(srcFile);
-            }).reduce(function (acc, items) {
+                return {srcFile: srcFile, items: extractStrings(srcFile)};
+            }).reduce(function (acc, result) {
                 if (!acc) {
                     return;
+                }
+                var items = result.items;
+                if (!items) {
+                    items = [];
+                    grunt.debug.writeln('No strings extracted from file ' + result.srcFile);
                 }
                 items.forEach(function (item) {
                     if (!acc[item.msgId]) {
