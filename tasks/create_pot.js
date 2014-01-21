@@ -56,6 +56,11 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length
                             ) {
+                                if (!node['arguments'][0].value) {
+                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'][0], null, 4));
+                                    grunt.verbose.writeln('Skipping gt call');
+                                    return;
+                                }
                                 items = items || [];
                                 items.push({
                                     msgId: node['arguments'][0].value.trim(),
