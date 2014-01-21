@@ -79,7 +79,7 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('create_pot', 'Extract calls to gettext that is used with a requirejs gettext module.', function () {
         var PO = require('pofile');
-        var options = this.options;
+        var options = this.options();
 
         this.files.forEach(function (file) {
             var poItems;
