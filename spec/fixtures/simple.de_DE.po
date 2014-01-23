@@ -27,3 +27,10 @@ msgstr "übersetze auch mich! Alternativ!"
 msgctxt ""
 msgid "String with \" in it"
 msgstr "Zeichenkette mit \""
+
+#. %1$s is the given name
+#. %2$s is the family name
+#, c-format
+#: module:test/mySimpleModule
+msgid "Welcome, %1$s, %2$s"
+msgstr ""

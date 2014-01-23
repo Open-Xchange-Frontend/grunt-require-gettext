@@ -28,5 +28,11 @@ define('simpleModule', [
     //#, c-format
     console.log(gt.npgettext('part of computer', 'Drive contains %1$d item', 'Drive contains %1$d items', 42));
 
+    console.log(
+        //#. %1$s is the given name
+        //#. %2$s is the family name
+        //#, c-format
+        gt('Welcome, %1$s %2$s!', firstName, lastName)
+    );
     return true;
 });
