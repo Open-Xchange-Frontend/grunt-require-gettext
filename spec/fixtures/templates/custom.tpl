@@ -1,1 +1,1 @@
-<%= JSON.stringify(dictionary) %>
+<%= JSON.stringify(dictionary, null, 4) %>
