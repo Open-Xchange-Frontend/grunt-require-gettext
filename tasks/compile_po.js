@@ -41,7 +41,7 @@ module.exports = function (grunt) {
         "plural": "<%= plural %>",\n\
         "dictionary": {\n\
 <% for (var msgid in dictionary) {%>\
-            "<%= msgid %>": "<%= dictionary[msgid] %>",\n\
+            <%= JSON.stringify(msgid) %>: <%= JSON.stringify(dictionary[msgid]) %>,\n\
 <% } %>\
         }\n\
     };\n\

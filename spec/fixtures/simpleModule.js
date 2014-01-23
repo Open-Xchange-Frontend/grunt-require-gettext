@@ -12,5 +12,6 @@ define('simpleModule', [
     console.log('There should be a translated string: ', gt('translate me!'));
     console.log('There should be a translated string with alternative gt module: ', altGT('translate me, too! Alternatively!'));
 
+    console.log(gt('String with \" in it'));
     return true;
 });
