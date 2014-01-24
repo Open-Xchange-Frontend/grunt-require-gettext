@@ -107,6 +107,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.1.3
+
+- fix major timing issue with multiple source files
+
 ### 0.1.2
 
 - less verbose output in non-verbose mode
