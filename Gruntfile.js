@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                 spawn: true
             },
             all: {
-                files: ['spec/**/*_spec.js', 'tasks/*.js', 'Gruntfile.js'],
+                files: ['spec/**/*.*', 'tasks/*.js', 'Gruntfile.js'],
                 tasks: ['jshint', 'create_pot', 'compile_po', 'mochaTest']
             }
         },

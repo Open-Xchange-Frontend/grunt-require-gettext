@@ -6,7 +6,7 @@ var expect = chai.expect;
 chai.use(require('chai-fs'));
 chai.use(require('chai-things'));
 
-describe('extract_gt_strings', function () {
+describe('extract strings', function () {
     describe('should extract plain gt calls', function () {
         function findString(str, items) {
             return items.filter(function (item) {

@@ -41,12 +41,14 @@ module.exports = function (grunt) {
         "plural": "<%= plural %>",\n\
         "dictionary": {\n\
 <% for (var msgid in dictionary) {%>\
-            "<%= msgid %>": "<%= dictionary[msgid] %>",\n\
+            <%= JSON.stringify(msgid) %>: <%= JSON.stringify(dictionary[msgid]) %>,\n\
 <% } %>\
         }\n\
     };\n\
 });\n';
             /* jshint multistr: false */
+
+            var showModuleWarning = false;
             PO.load(poFile, function (err, po) {
                 if (err) {
                     grunt.fail.fatal(err);
@@ -59,7 +61,8 @@ module.exports = function (grunt) {
                     })[0];
 
                     if (!module) {
-                        grunt.log.warn('Ignoring item (no module found): ' + item.msgid);
+                        showModuleWarning = true;
+                        grunt.verbose.warn('Ignoring item (no module found): ' + item.msgid);
                         grunt.verbose.warn(item);
                         grunt.verbose.warn('in file', poFile);
                         return;
@@ -102,6 +105,9 @@ module.exports = function (grunt) {
                     };
 
                     grunt.file.write(dest + module + '.' + data.language + '.js', _.template(template, data));
+                }
+                if (showModuleWarning) {
+                    grunt.verbose.or.warn('Could not load module information for at least one item, run with --verbose to get more info');
                 }
                 done(true);
             });

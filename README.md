@@ -107,6 +107,13 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.1.2
+
+- less verbose output in non-verbose mode
+- watch task detects changes to _all_ files in spec dir
+- some styling improvements
+- fix issue with quotes in translated strings
+
 ### 0.1.1
 
 - more verbose output on errors

@@ -22,3 +22,8 @@ msgstr "übersetze mich!"
 msgid "translate me, too! Alternatively!"
 msgstr "übersetze auch mich! Alternativ!"
 
+#: spec/fixtures/simpleModule.js:15
+#: module:test/mySimpleModule
+msgctxt ""
+msgid "String with \" in it"
+msgstr "Zeichenkette mit \""
