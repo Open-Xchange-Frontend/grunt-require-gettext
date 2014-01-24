@@ -23,9 +23,9 @@ module.exports = function (grunt) {
             done(false);
         }
 
-        this.files[0].src.filter(function (srcFile) {
-            return srcFile.substr(-3) === '.po';
-        }).forEach(function (poFile) {
+        var last = this.files[0].src.length - 1;
+        var showModuleWarning = false;
+        this.files[0].src.forEach(function (poFile, index) {
             var fromFile;
             var templateFile = options().template;
             if (templateFile && grunt.file.isFile(templateFile)) {
@@ -48,7 +48,6 @@ module.exports = function (grunt) {
 });\n';
             /* jshint multistr: false */
 
-            var showModuleWarning = false;
             PO.load(poFile, function (err, po) {
                 if (err) {
                     grunt.fail.fatal(err);
@@ -106,10 +105,13 @@ module.exports = function (grunt) {
 
                     grunt.file.write(dest + module + '.' + data.language + '.js', _.template(template, data));
                 }
-                if (showModuleWarning) {
-                    grunt.verbose.or.warn('Could not load module information for at least one item, run with --verbose to get more info');
+
+                if (index === last) {
+                    if (showModuleWarning) {
+                        grunt.verbose.or.warn('Could not load module information for at least one item, run with --verbose to get more info');
+                    }
+                    done(true);
                 }
-                done(true);
             });
         });
     });
