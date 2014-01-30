@@ -114,5 +114,8 @@ module.exports = function (grunt) {
                 }
             });
         });
+        if (this.files[0].src.length === 0) {
+            done(true);
+        }
     });
 };
