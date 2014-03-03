@@ -114,6 +114,30 @@ module.exports = function (grunt) {
                                     fileName: fileName,
                                     line: node.loc.start.line
                                 });
+                            } else if (
+                                node !== null &&
+                                node.type === 'CallExpression' &&
+                                node.callee !== null &&
+                                node.callee.type === 'MemberExpression' &&
+                                node.callee.object.name === gtName &&
+                                node.callee.property.name === 'npgettext' &&
+                                node['arguments'] !== null &&
+                                node['arguments'].length === 4
+                            ) {
+                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2].value || !node['arguments'][2].value) {
+                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
+                                    grunt.verbose.writeln('Skipping gt.npgettext call');
+                                    return;
+                                }
+                                items = items || [];
+                                items.push({
+                                    msgContext: node['arguments'][0].value.trim(),
+                                    msgId: node['arguments'][1].value.trim(),
+                                    msgIdPlural: node['arguments'][2].value.trim(),
+                                    module: module,
+                                    fileName: fileName,
+                                    line: node.loc.start.line
+                                });
                             }
                         });
                     }

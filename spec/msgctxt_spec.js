@@ -43,4 +43,21 @@ describe('extract strings', function () {
             });
         });
     });
+    describe('should extract plural forms with context', function () {
+        it('from simple example file', function (done) {
+            expect('tmp/i18n/simple.pot').to.be.a.file().and.not.empty;
+            PO.load('tmp/i18n/simple.pot', function (err, po) {
+                //msgid extracted
+                expect(po.items).to.contain.a.thing.with.property('msgid', 'Drive contains %1$d item');
+
+                var items = findAllStrings('Drive contains %1$d item', po.items);
+                expect(items).to.contain.a.thing.with.property('msgid_plural', 'Drive contains %1$d items');
+                expect(items).to.contain.a.thing.with.property('msgctxt', 'product name');
+                expect(items).to.contain.a.thing.with.property('msgctxt', 'part of computer');
+
+                expect(err).to.equal(null);
+                done();
+            });
+        });
+    });
 });
