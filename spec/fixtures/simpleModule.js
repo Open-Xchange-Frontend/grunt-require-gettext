@@ -16,5 +16,9 @@ define('simpleModule', [
 
     console.log(gt.pgettext('perform action', 'Empty folder'));
     console.log(gt.pgettext('describe state', 'Empty folder'));
+
+    //#. %1$d is the number of items in the box
+    //#, c-format
+    console.log(gt.ngettext('Box contains %1$d item', 'Box contains %1$d items', 4));
     return true;
 });
