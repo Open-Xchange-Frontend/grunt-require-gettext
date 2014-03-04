@@ -185,6 +185,10 @@ module.exports = function (grunt) {
                     if (poItem.references.indexOf('module:' + item.module) < 0) {
                         poItem.references.push('module:' + item.module);
                     }
+                    if (poItem.msgid_plural) {
+                        //FIXME: may be, this should be handled by pofile library
+                        poItem.msgstr = ['', ''];
+                    }
                 });
                 return acc;
             }, {});
