@@ -105,7 +105,8 @@ module.exports = function (grunt) {
                                     msgContext: node['arguments'][0].value.trim(),
                                     module: module,
                                     fileName: fileName,
-                                    line: node.loc.start.line
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
                                 });
                             } else if (
                                 node !== null &&
@@ -128,7 +129,8 @@ module.exports = function (grunt) {
                                     msgIdPlural: node['arguments'][1].value.trim(),
                                     module: module,
                                     fileName: fileName,
-                                    line: node.loc.start.line
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
                                 });
                             } else if (
                                 node !== null &&
@@ -152,7 +154,8 @@ module.exports = function (grunt) {
                                     msgIdPlural: node['arguments'][2].value.trim(),
                                     module: module,
                                     fileName: fileName,
-                                    line: node.loc.start.line
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
                                 });
                             }
                         });
