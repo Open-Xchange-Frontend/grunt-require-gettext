@@ -10,6 +10,7 @@
 
 module.exports = function (grunt) {
     var esprima = require('esprima');
+    var _ = require('lodash');
 
     function extractStrings(fileName) {
         function walkTree(node, fn) {
@@ -21,6 +22,20 @@ module.exports = function (grunt) {
                     walkTree(obj, fn);
                 }
             }
+        }
+
+        function getComment(ast, options) {
+            var commentObj = ast.comments.filter(function (comment) {
+                return comment.loc.end.line === options.ends;
+            })[0];
+
+            if (commentObj) {
+                // call getComment recursively to support multiple one line comments above the gettext call
+                // Note: the \n that will be in front of the result string will be ignored during comment
+                // parsing
+                return (getComment(ast, {ends: options.ends - 1}) || '') + '\n' + commentObj.value;
+            }
+            return null;
         }
 
         var syntax = esprima.parse(grunt.file.read(fileName), {comment: true, loc: true});
@@ -66,7 +81,81 @@ module.exports = function (grunt) {
                                     msgId: node['arguments'][0].value.trim(),
                                     module: module,
                                     fileName: fileName,
-                                    line: node.loc.start.line
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                });
+                            } else if (
+                                node !== null &&
+                                node.type === 'CallExpression' &&
+                                node.callee !== null &&
+                                node.callee.type === 'MemberExpression' &&
+                                node.callee.object.name === gtName &&
+                                node.callee.property.name === 'pgettext' &&
+                                node['arguments'] !== null &&
+                                node['arguments'].length === 2
+                            ) {
+                                if (!node['arguments'][0].value || !node['arguments'][1].value) {
+                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
+                                    grunt.verbose.writeln('Skipping gt.pgettext call');
+                                    return;
+                                }
+                                items = items || [];
+                                items.push({
+                                    msgId: node['arguments'][1].value.trim(),
+                                    msgContext: node['arguments'][0].value.trim(),
+                                    module: module,
+                                    fileName: fileName,
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                });
+                            } else if (
+                                node !== null &&
+                                node.type === 'CallExpression' &&
+                                node.callee !== null &&
+                                node.callee.type === 'MemberExpression' &&
+                                node.callee.object.name === gtName &&
+                                node.callee.property.name === 'ngettext' &&
+                                node['arguments'] !== null &&
+                                node['arguments'].length === 3
+                            ) {
+                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2].value) {
+                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
+                                    grunt.verbose.writeln('Skipping gt.ngettext call');
+                                    return;
+                                }
+                                items = items || [];
+                                items.push({
+                                    msgId: node['arguments'][0].value.trim(),
+                                    msgIdPlural: node['arguments'][1].value.trim(),
+                                    module: module,
+                                    fileName: fileName,
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                });
+                            } else if (
+                                node !== null &&
+                                node.type === 'CallExpression' &&
+                                node.callee !== null &&
+                                node.callee.type === 'MemberExpression' &&
+                                node.callee.object.name === gtName &&
+                                node.callee.property.name === 'npgettext' &&
+                                node['arguments'] !== null &&
+                                node['arguments'].length === 4
+                            ) {
+                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2].value || !node['arguments'][2].value) {
+                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
+                                    grunt.verbose.writeln('Skipping gt.npgettext call');
+                                    return;
+                                }
+                                items = items || [];
+                                items.push({
+                                    msgContext: node['arguments'][0].value.trim(),
+                                    msgId: node['arguments'][1].value.trim(),
+                                    msgIdPlural: node['arguments'][2].value.trim(),
+                                    module: module,
+                                    fileName: fileName,
+                                    line: node.loc.start.line,
+                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
                                 });
                             }
                         });
@@ -98,16 +187,31 @@ module.exports = function (grunt) {
                     grunt.log.debug('No strings extracted from file ' + result.srcFile);
                 }
                 items.forEach(function (item) {
-                    if (!acc[item.msgId]) {
-                        acc[item.msgId] = new PO.Item();
+                    var key = item.msgId;
+                    if (item.msgContext) {
+                        key += '_' + item.msgContext;
                     }
-                    var poItem = acc[item.msgId];
+                    if (!acc[key]) {
+                        acc[key] = new PO.Item();
+                    }
+                    var poItem = acc[key];
                     poItem.msgid = item.msgId;
+                    poItem.msgid_plural = item.msgIdPlural;
+                    poItem.msgctxt = item.msgContext;
                     if (poItem.references.indexOf(item.fileName + ':' + item.line) < 0) {
                         poItem.references.push(item.fileName + ':' + item.line);
                     }
                     if (poItem.references.indexOf('module:' + item.module) < 0) {
                         poItem.references.push('module:' + item.module);
+                    }
+                    if (poItem.msgid_plural) {
+                        //FIXME: may be, this should be handled by pofile library
+                        poItem.msgstr = ['', ''];
+                    }
+                    if (item.comment) {
+                        var commentItem = PO.parse('msgid ""\nmsgstr ""\n\n' + item.comment + '\nmsgid "temp"\nmsgstr""\n').items[0];
+                        _(poItem.flags).extend(commentItem.flags);
+                        poItem.extractedComments = [].concat(poItem.extractedComments, commentItem.extractedComments);
                     }
                 });
                 return acc;
