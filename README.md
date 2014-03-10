@@ -107,6 +107,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.1
+
+- add work-around for problems with references and msgmerge tool from gettext
+    - fix should go upstream into pofile lib
+
 ### 0.2.0
 
 - add support for advanced gettext usages
