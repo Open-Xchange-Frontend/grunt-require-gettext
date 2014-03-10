@@ -55,7 +55,11 @@ module.exports = function (grunt) {
                 }
                 var modules = {};
                 po.items.forEach(function (item) {
-                    var module = item.references.filter(function (ref) {
+                    var module = item.references.map(function (ref) {
+                        return ref.split(' ');
+                    }).reduce(function (acc, ref) {
+                        return acc.concat(ref);
+                    }, []).filter(function (ref) {
                         return ref.substr(0, 7) === 'module:';
                     })[0];
 
