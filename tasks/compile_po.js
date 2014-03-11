@@ -80,8 +80,15 @@ module.exports = function (grunt) {
                         modules[module].push(item);
                     });
                 });
+                var mkKey = function (poItem) {
+                    var key = poItem.msgctxt ? poItem.msgctxt + '\x00' + poItem.msgid : poItem.msgid;
+                    if (poItem.msgid_plural) {
+                        key += '\x01' + poItem.msgid_plural;
+                    }
+                    return key;
+                };
                 var mkIdStrMapping = function (acc, poItem) {
-                    acc[poItem.msgid] = poItem.msgstr;
+                    acc[mkKey(poItem)] = poItem.msgstr;
                     return acc;
                 };
 
