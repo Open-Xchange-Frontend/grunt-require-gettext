@@ -17,8 +17,8 @@ msgstr ""
 #, c-format
 msgid "Box contains %1$d item"
 msgid_plural "Box contains %1$d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Box enthält %1$d Elemente"
+msgstr[1] "Box enthält %1$d Elemente"
 
 #. %1$d is the number of items in the drive
 #. Drive is meant to be a part of a computer, here (as in HDD)
@@ -44,13 +44,13 @@ msgstr[1] ""
 #: spec/fixtures/simpleModule.js:21 module:test/mySimpleModule
 msgctxt "describe state"
 msgid "Empty folder"
-msgstr ""
+msgstr "Leerer Ordner"
 
 #. empty is meant as an action (make folder empty!)
 #: spec/fixtures/simpleModule.js:19 module:test/mySimpleModule
 msgctxt "perform action"
 msgid "Empty folder"
-msgstr ""
+msgstr "Leere Ordner"
 
 #: spec/fixtures/simpleModule.js:15 module:test/mySimpleModule
 #: spec/fixtures/simpleModule.js:16 module:test/alternativeGTModule
