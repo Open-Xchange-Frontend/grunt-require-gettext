@@ -33,4 +33,18 @@ describe('compile po file', function () {
             done();
         });
     });
+    describe('with mesages pointing to different modules', function () {
+        it('should put message into each referenced module', function (done) {
+            expect('tmp/build/i18n/test/mySimpleModule.de_DE.js').to.be.a.file().and.not.empty;
+            expect('tmp/build/i18n/test/alternativeGTModule.de_DE.js').to.be.a.file().and.not.empty;
+            requirejs(
+                ['test/mySimpleModule.de_DE',
+                'test/alternativeGTModule.de_DE'], function (mySimpleModule, alternativeGTModule) {
+                    expect(mySimpleModule.dictionary).to.have.property('String with " in it').that.is.an('array');
+                    expect(alternativeGTModule.dictionary).to.have.property('String with " in it').that.is.an('array');
+                    done();
+                }
+            );
+        });
+    });
 });
