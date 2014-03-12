@@ -107,6 +107,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.3
+
+- filter untranslated strings from dictionary in compile_po task
+
 ### 0.2.2
 
 - fix support for one message to be in multiple modules
