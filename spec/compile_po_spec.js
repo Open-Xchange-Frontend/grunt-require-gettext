@@ -32,6 +32,13 @@ describe('compile po file', function () {
             expect(translation['translate me!'][0]).to.equal('übersetze mich!');
             done();
         });
+        describe('with missing translation', function () {
+            it('should be filtered from dictionary', function (done) {
+                var translation = JSON.parse(grunt.file.read('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js'));
+                expect(translation).not.to.have.ownProperty('part of computer\x00Drive contains %1$d item\x01Drive contains %1$d items');
+                done();
+            });
+        });
         describe('items with no context', function () {
             it('should render keys with singular form only', function (done) {
                 var translation = JSON.parse(grunt.file.read('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js'));
