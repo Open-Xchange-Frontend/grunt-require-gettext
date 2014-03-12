@@ -107,6 +107,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.2
+
+- fix support for one message to be in multiple modules
+- fix problem with ambiguous messages
+    - use context, singular and plural of a message to determine a unique id
+
 ### 0.2.1
 
 - add work-around for problems with references and msgmerge tool from gettext

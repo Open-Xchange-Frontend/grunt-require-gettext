@@ -13,16 +13,16 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 
 #. %1$d is the number of items in the box
-#: spec/fixtures/simpleModule.js:24 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:25 module:test/mySimpleModule
 #, c-format
 msgid "Box contains %1$d item"
 msgid_plural "Box contains %1$d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Box enthält %1$d Elemente"
+msgstr[1] "Box enthält %1$d Elemente"
 
 #. %1$d is the number of items in the drive
 #. Drive is meant to be a part of a computer, here (as in HDD)
-#: spec/fixtures/simpleModule.js:33 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:34 module:test/mySimpleModule
 #, c-format
 msgctxt "part of computer"
 msgid "Drive contains %1$d item"
@@ -32,7 +32,7 @@ msgstr[1] ""
 
 #. %1$d is the number of items in the drive
 #. Drive is meant to be a product name, here
-#: spec/fixtures/simpleModule.js:29 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:30 module:test/mySimpleModule
 #, c-format
 msgctxt "product name"
 msgid "Drive contains %1$d item"
@@ -41,25 +41,26 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. empty is meant as a state (folder is empty)
-#: spec/fixtures/simpleModule.js:20 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:21 module:test/mySimpleModule
 msgctxt "describe state"
 msgid "Empty folder"
-msgstr ""
+msgstr "Leerer Ordner"
 
 #. empty is meant as an action (make folder empty!)
-#: spec/fixtures/simpleModule.js:18 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:19 module:test/mySimpleModule
 msgctxt "perform action"
 msgid "Empty folder"
-msgstr ""
+msgstr "Leere Ordner"
 
 #: spec/fixtures/simpleModule.js:15 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:16 module:test/alternativeGTModule
 #, fuzzy
 msgid "String with \" in it"
 msgstr "Zeichenkette mit \""
 
 #. %1$s is the given name
 #. %2$s is the family name
-#: spec/fixtures/simpleModule.js:39 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:40 module:test/mySimpleModule
 #, c-format
 msgid "Welcome, %1$s %2$s!"
 msgstr ""

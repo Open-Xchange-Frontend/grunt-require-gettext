@@ -55,31 +55,40 @@ module.exports = function (grunt) {
                 }
                 var modules = {};
                 po.items.forEach(function (item) {
-                    var module = item.references.map(function (ref) {
+                    var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');
                     }).reduce(function (acc, ref) {
                         return acc.concat(ref);
                     }, []).filter(function (ref) {
                         return ref.substr(0, 7) === 'module:';
-                    })[0];
+                    });
 
-                    if (!module) {
+                    if (itemModules.length === 0) {
                         showModuleWarning = true;
                         grunt.verbose.warn('Ignoring item (no module found): ' + item.msgid);
                         grunt.verbose.warn(item);
                         grunt.verbose.warn('in file', poFile);
                         return;
                     }
-                    module = module.substr(7);
+                    itemModules.forEach(function (module) {
+                        module = module.substr(7);
 
-                    module = module;
-                    if (!modules[module]) {
-                        modules[module] = [];
-                    }
-                    modules[module].push(item);
+                        module = module;
+                        if (!modules[module]) {
+                            modules[module] = [];
+                        }
+                        modules[module].push(item);
+                    });
                 });
+                var mkKey = function (poItem) {
+                    var key = poItem.msgctxt ? poItem.msgctxt + '\x00' + poItem.msgid : poItem.msgid;
+                    if (poItem.msgid_plural) {
+                        key += '\x01' + poItem.msgid_plural;
+                    }
+                    return key;
+                };
                 var mkIdStrMapping = function (acc, poItem) {
-                    acc[poItem.msgid] = poItem.msgstr;
+                    acc[mkKey(poItem)] = poItem.msgstr;
                     return acc;
                 };
 
