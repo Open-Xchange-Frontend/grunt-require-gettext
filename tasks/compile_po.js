@@ -91,6 +91,11 @@ module.exports = function (grunt) {
                     acc[mkKey(poItem)] = poItem.msgstr;
                     return acc;
                 };
+                var isTranslated = function (poItem) {
+                    return poItem.msgstr.reduce(function (acc, translation) {
+                        return acc && !!translation;
+                    }, true);
+                };
 
                 var parsePluralForms = function (str) {
                     return str.split(';').map(function (val) {
@@ -106,7 +111,7 @@ module.exports = function (grunt) {
                 };
 
                 for (var module in modules) {
-                    var items = modules[module].reduce(mkIdStrMapping, {});
+                    var items = modules[module].filter(isTranslated).reduce(mkIdStrMapping, {});
                     var pluralForms = parsePluralForms(po.headers['Plural-Forms']);
                     var data = {
                         module: module,
