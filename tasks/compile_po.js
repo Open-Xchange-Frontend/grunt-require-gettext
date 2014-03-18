@@ -97,7 +97,7 @@ module.exports = function (grunt) {
                     }, true);
                 };
                 var isNotFuzzy = function (poItem) {
-                    return !poItem.flags.fuzzy;
+                    return options().includeFuzzy || !poItem.flags.fuzzy;
                 };
 
                 var parsePluralForms = function (str) {

@@ -78,7 +78,7 @@ describe('compile po file', function () {
             });
 
             //TODO: implement this
-            it.skip('should be included in catalog if includeFuzzy option is set', function () {
+            it('should be included in catalog if includeFuzzy option is set', function () {
                 var translation = JSON.parse(grunt.file.read('tmp/build/i18n/includeFuzzy/test/mySimpleModule.de_DE.js'));
                 expect(translation).to.have.property('A message with fuzzy translation').that.is.an('array');
             });

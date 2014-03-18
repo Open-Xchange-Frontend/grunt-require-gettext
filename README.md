@@ -39,6 +39,13 @@ grunt.initConfig({
 
 ### Options
 
+#### options.includeFuzzy
+Type: `boolean`
+Default value: `undefined`
+
+Include messages flagged as fuzzy into the catalog. Default is not to include such messages, but sometimes they should not be
+filtered. Use this option to include fuzzy messages.
+
 #### options.template
 Type: `String`
 Default value: `null`
