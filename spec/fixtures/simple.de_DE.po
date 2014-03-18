@@ -54,7 +54,6 @@ msgstr "Leere Ordner"
 
 #: spec/fixtures/simpleModule.js:15 module:test/mySimpleModule
 #: spec/fixtures/simpleModule.js:16 module:test/alternativeGTModule
-#, fuzzy
 msgid "String with \" in it"
 msgstr "Zeichenkette mit \""
 
