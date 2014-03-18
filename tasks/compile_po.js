@@ -16,6 +16,9 @@ module.exports = function (grunt) {
         var _ = require('lodash');
         var dest = this.files[0].dest;
         var options = this.options;
+        var isNotFuzzy = function (poItem) {
+            return includeFuzzy || !poItem.flags.fuzzy;
+        };
 
         grunt.file.mkdir(dest);
         if (this.files.length > 1 || !grunt.file.isDir(dest)) {
@@ -25,6 +28,7 @@ module.exports = function (grunt) {
 
         var last = this.files[0].src.length - 1;
         var showModuleWarning = false;
+        var includeFuzzy = options().includeFuzzy;
         this.files[0].src.forEach(function (poFile, index) {
             var fromFile;
             var templateFile = options().template;
@@ -54,7 +58,9 @@ module.exports = function (grunt) {
                     done(false);
                 }
                 var modules = {};
-                po.items.forEach(function (item) {
+                po.items
+                .filter(isNotFuzzy)
+                .forEach(function (item) {
                     var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');
                     }).reduce(function (acc, ref) {
@@ -96,9 +102,6 @@ module.exports = function (grunt) {
                         return acc && !!translation;
                     }, true);
                 };
-                var isNotFuzzy = function (poItem) {
-                    return options().includeFuzzy || !poItem.flags.fuzzy;
-                };
 
                 var parsePluralForms = function (str) {
                     return str.split(';').map(function (val) {
@@ -116,7 +119,6 @@ module.exports = function (grunt) {
                 for (var module in modules) {
                     var items = modules[module]
                         .filter(isTranslated)
-                        .filter(isNotFuzzy)
                         .reduce(mkIdStrMapping, {});
                     var pluralForms = parsePluralForms(po.headers['Plural-Forms']);
                     var data = {
