@@ -114,6 +114,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.1
+
+- fix issue with peerDependency to grunt
+
 ### 0.3.0
 
 - filter messages marked as fuzzy from dictionary in compile_po task
