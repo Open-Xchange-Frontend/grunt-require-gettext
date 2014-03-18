@@ -39,5 +39,7 @@ define('simpleModule', [
         //#, c-format
         gt('Welcome, %1$s %2$s!', firstName, lastName)
     );
+
+    console.log(gt('A message with fuzzy translation'));
     return true;
 });

@@ -96,6 +96,9 @@ module.exports = function (grunt) {
                         return acc && !!translation;
                     }, true);
                 };
+                var isNotFuzzy = function (poItem) {
+                    return !poItem.flags.fuzzy;
+                };
 
                 var parsePluralForms = function (str) {
                     return str.split(';').map(function (val) {
@@ -111,7 +114,10 @@ module.exports = function (grunt) {
                 };
 
                 for (var module in modules) {
-                    var items = modules[module].filter(isTranslated).reduce(mkIdStrMapping, {});
+                    var items = modules[module]
+                        .filter(isTranslated)
+                        .filter(isNotFuzzy)
+                        .reduce(mkIdStrMapping, {});
                     var pluralForms = parsePluralForms(po.headers['Plural-Forms']);
                     var data = {
                         module: module,
