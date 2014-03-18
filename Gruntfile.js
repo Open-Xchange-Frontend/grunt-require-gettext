@@ -75,6 +75,16 @@ module.exports = function (grunt) {
                     dest: 'tmp/build/i18n/'
                 }]
             },
+            fuzzy: {
+                options: {
+                    template: 'spec/fixtures/templates/custom.tpl',
+                    includeFuzzy: true
+                },
+                files: [{
+                    src: ['spec/fixtures/**/*.po'],
+                    dest: 'tmp/build/i18n/includeFuzzy/'
+                }]
+            },
             custom_template: {
                 options: {
                     template: 'spec/fixtures/templates/custom.tpl'

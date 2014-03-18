@@ -12,6 +12,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
+#: spec/fixtures/simpleModule.js:43 module:test/mySimpleModule
+#, fuzzy
+msgid "A message with fuzzy translation"
+msgstr "Sehr seltsame Übersetzung ist das hier. Außerdem mit Rechtshcreibfehler."
+
 #. %1$d is the number of items in the box
 #: spec/fixtures/simpleModule.js:25 module:test/mySimpleModule
 #, c-format
@@ -54,7 +59,6 @@ msgstr "Leere Ordner"
 
 #: spec/fixtures/simpleModule.js:15 module:test/mySimpleModule
 #: spec/fixtures/simpleModule.js:16 module:test/alternativeGTModule
-#, fuzzy
 msgid "String with \" in it"
 msgstr "Zeichenkette mit \""
 

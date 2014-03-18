@@ -70,6 +70,19 @@ describe('compile po file', function () {
                 done();
             });
         });
+        describe('messages with fuzzy flag', function () {
+            it('should be filtered from catalog by default', function () {
+                var translation = JSON.parse(grunt.file.read('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js'));
+                expect('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js').to.be.a.file().and.not.empty;
+                expect(translation).not.to.have.property('A message with fuzzy translation').that.is.an('array');
+            });
+
+            //TODO: implement this
+            it('should be included in catalog if includeFuzzy option is set', function () {
+                var translation = JSON.parse(grunt.file.read('tmp/build/i18n/includeFuzzy/test/mySimpleModule.de_DE.js'));
+                expect(translation).to.have.property('A message with fuzzy translation').that.is.an('array');
+            });
+        });
     });
     describe('with mesages pointing to different modules', function () {
         it('should put message into each referenced module', function (done) {

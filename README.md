@@ -39,6 +39,13 @@ grunt.initConfig({
 
 ### Options
 
+#### options.includeFuzzy
+Type: `boolean`
+Default value: `undefined`
+
+Include messages flagged as fuzzy into the catalog. Default is not to include such messages, but sometimes they should not be
+filtered. Use this option to include fuzzy messages.
+
 #### options.template
 Type: `String`
 Default value: `null`
@@ -106,6 +113,11 @@ Headers that should be added to the pot file.
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+
+### 0.3.0
+
+- filter messages marked as fuzzy from dictionary in compile_po task
+    - restore old behaviour with new includeFuzzy option
 
 ### 0.2.3
 
