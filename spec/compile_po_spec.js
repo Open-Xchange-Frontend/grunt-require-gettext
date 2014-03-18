@@ -98,4 +98,8 @@ describe('compile po file', function () {
             );
         });
     });
+    it('should not extract obsolete messages', function () {
+        var translation = JSON.parse(grunt.file.read('tmp/build/i18n/custom/test/alternativeGTModule.de_DE.js'));
+        expect(translation).not.to.have.property('unused message').that.is.an('array');
+    });
 });

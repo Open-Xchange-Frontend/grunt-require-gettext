@@ -24,6 +24,9 @@ module.exports = function (grunt) {
                 return acc && !!translation;
             }, true);
         };
+        var isNotObsolete = function (poItem) {
+            return !poItem.obsolete;
+        };
 
         grunt.file.mkdir(dest);
         if (this.files.length > 1 || !grunt.file.isDir(dest)) {
@@ -66,6 +69,7 @@ module.exports = function (grunt) {
                 po.items
                 .filter(isTranslated)
                 .filter(isNotFuzzy)
+                .filter(isNotObsolete)
                 .forEach(function (item) {
                     var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');

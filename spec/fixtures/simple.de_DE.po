@@ -76,3 +76,12 @@ msgstr "übersetze mich!"
 #: spec/fixtures/simpleModule.js:13 module:test/alternativeGTModule
 msgid "translate me, too! Alternatively!"
 msgstr "übersetze auch mich! Alternativ!"
+
+#~
+#~ #: module:test/alternativeGTModule
+#~ msgid "unused message"
+#~ msgstr "ungenutzte Nachricht"
+
+#~
+#~ msgid "unused message 2"
+#~ msgstr "ungenutzte Nachricht 2"
