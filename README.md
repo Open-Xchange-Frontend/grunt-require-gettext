@@ -114,6 +114,14 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.2
+
+- really fix the issue with peerDependency to grunt
+- refactoring (less output during grunt compile_po --verbose)
+    - po files with many fuzzy items should be handled faster
+- add filter for obsolete messages (no option to override, yet)
+    - force pofile dependency to 0.2.7, due to needed feature
+
 ### 0.3.1
 
 - fix issue with peerDependency to grunt
