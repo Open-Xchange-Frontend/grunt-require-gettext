@@ -114,6 +114,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.3
+
+- fix crash when extracting from unused require gettext modules
+
 ### 0.3.2
 
 - really fix the issue with peerDependency to grunt

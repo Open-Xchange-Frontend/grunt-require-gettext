@@ -58,7 +58,10 @@ module.exports = function (grunt) {
                     }
                 },
                 files: {
-                    'tmp/i18n/simple.pot': ['spec/fixtures/simpleModule.js']
+                    'tmp/i18n/simple.pot': [
+                        'spec/fixtures/simpleModule.js',
+                        'spec/fixtures/fuzzyModule.js'
+                    ]
                 }
             },
             no_headers: {

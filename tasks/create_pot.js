@@ -51,8 +51,13 @@ module.exports = function (grunt) {
             ) {
                 node['arguments'][1].elements.map(function (el, index) {
                     if (el.value.substr(0, 8) === 'gettext!') {
+                        var param = node['arguments'][2].params[index];
+                        if (!param) {
+                            grunt.log.warn('Unused require-gettext module call in', fileName);
+                            return;
+                        }
                         return {
-                            name: node['arguments'][2].params[index].name,
+                            name: param.name,
                             module: el.value.substr(8)
                         };
                     }
