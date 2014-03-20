@@ -77,7 +77,10 @@ module.exports = function (grunt) {
                     });
 
                     if (itemModules.length === 0) {
-                        showModuleWarning = true;
+                        if (!(isTranslated(item) || isNotFuzzy(item) || isNotObsolete(item))) {
+                            //message will not be filtered by one of the above rules, warn the user!
+                            showModuleWarning = true;
+                        }
                         grunt.verbose.warn('Ignoring item (no module found): ' + item.msgid);
                         grunt.verbose.warn(item);
                         grunt.verbose.warn('in file', poFile);
