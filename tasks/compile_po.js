@@ -67,9 +67,6 @@ module.exports = function (grunt) {
                 }
                 var modules = {};
                 po.items
-                .filter(isTranslated)
-                .filter(isNotFuzzy)
-                .filter(isNotObsolete)
                 .forEach(function (item) {
                     var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');
@@ -122,7 +119,11 @@ module.exports = function (grunt) {
                 };
 
                 for (var module in modules) {
-                    var items = modules[module].reduce(mkIdStrMapping, {});
+                    var items = modules[module]
+                            .filter(isTranslated)
+                            .filter(isNotFuzzy)
+                            .filter(isNotObsolete)
+                            .reduce(mkIdStrMapping, {});
                     var pluralForms = parsePluralForms(po.headers['Plural-Forms']);
                     var data = {
                         module: module,

@@ -1,0 +1,81 @@
+# Julian Bäume <julian.baeume@open-xchange.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2014-01-15 14:13+0100\n"
+"Last-Translator: Julian Bäume <julian.baeume@open-xchange.com>\n"
+"Language-Team: US <julian.baeume@open-xchange.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: spec/fixtures/simpleModule.js:43 module:test/mySimpleModule
+msgid "A message with fuzzy translation"
+msgstr ""
+
+#: spec/fixtures/fuzzyModule.js:13 module:test/mySimpleModule
+msgid "A string from a fuzzy module"
+msgstr ""
+
+#. %1$d is the number of items in the box
+#: spec/fixtures/simpleModule.js:25 module:test/mySimpleModule
+#, c-format
+msgid "Box contains %1$d item"
+msgid_plural "Box contains %1$d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %1$d is the number of items in the drive
+#. Drive is meant to be a part of a computer, here (as in HDD)
+#: spec/fixtures/simpleModule.js:34 module:test/mySimpleModule
+#, c-format
+msgctxt "part of computer"
+msgid "Drive contains %1$d item"
+msgid_plural "Drive contains %1$d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %1$d is the number of items in the drive
+#. Drive is meant to be a product name, here
+#: spec/fixtures/simpleModule.js:30 module:test/mySimpleModule
+#, c-format
+msgctxt "product name"
+msgid "Drive contains %1$d item"
+msgid_plural "Drive contains %1$d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. empty is meant as a state (folder is empty)
+#: spec/fixtures/simpleModule.js:21 module:test/mySimpleModule
+msgctxt "describe state"
+msgid "Empty folder"
+msgstr ""
+
+#. empty is meant as an action (make folder empty!)
+#: spec/fixtures/simpleModule.js:19 module:test/mySimpleModule
+msgctxt "perform action"
+msgid "Empty folder"
+msgstr ""
+
+#: spec/fixtures/simpleModule.js:15 module:test/mySimpleModule
+#: spec/fixtures/simpleModule.js:16 module:test/alternativeGTModule
+msgid "String with \" in it"
+msgstr ""
+
+#. %1$s is the given name
+#. %2$s is the family name
+#: spec/fixtures/simpleModule.js:40 module:test/mySimpleModule
+#, c-format
+msgid "Welcome, %1$s %2$s!"
+msgstr ""
+
+#: spec/fixtures/simpleModule.js:12 module:test/mySimpleModule
+msgid "translate me!"
+msgstr ""
+
+#: spec/fixtures/simpleModule.js:13 module:test/alternativeGTModule
+msgid "translate me, too! Alternatively!"
+msgstr ""
