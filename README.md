@@ -114,6 +114,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.4
+
+- fix bug with completely untranslated modules not created at all (only the dictionary should be empty!)
+- fix issue with gt.ngettext and variable as third argument
+- hide warning about unknown module for filtered items
+
 ### 0.3.3
 
 - fix crash when extracting from unused require gettext modules

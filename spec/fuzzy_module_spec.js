@@ -19,7 +19,18 @@ describe('extract strings', function () {
                 //msgid extracted
                 expect(po.items).to.contain.a.thing.with.property('msgid', 'A string from a fuzzy module');
 
-                var item = findString('translate me!', po.items);
+                expect(err).to.equal(null);
+                done();
+            });
+        });
+        it('should find string within gt.format call', function (done) {
+            expect('tmp/i18n/simple.pot').to.be.a.file().and.not.empty;
+            PO.load('tmp/i18n/simple.pot', function (err, po) {
+                //msgid extracted
+                expect(po.items).to.contain.a.thing.with.property('msgid', '%1$d Minute');
+
+                var item = findString('%1$d Minute', po.items);
+                expect(item.msgid_plural).to.equal('%1$d Minutes');
                 expect(err).to.equal(null);
                 done();
             });

@@ -67,9 +67,6 @@ module.exports = function (grunt) {
                 }
                 var modules = {};
                 po.items
-                .filter(isTranslated)
-                .filter(isNotFuzzy)
-                .filter(isNotObsolete)
                 .forEach(function (item) {
                     var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');
@@ -80,7 +77,10 @@ module.exports = function (grunt) {
                     });
 
                     if (itemModules.length === 0) {
-                        showModuleWarning = true;
+                        if (!(isTranslated(item) || isNotFuzzy(item) || isNotObsolete(item))) {
+                            //message will not be filtered by one of the above rules, warn the user!
+                            showModuleWarning = true;
+                        }
                         grunt.verbose.warn('Ignoring item (no module found): ' + item.msgid);
                         grunt.verbose.warn(item);
                         grunt.verbose.warn('in file', poFile);
@@ -122,7 +122,11 @@ module.exports = function (grunt) {
                 };
 
                 for (var module in modules) {
-                    var items = modules[module].reduce(mkIdStrMapping, {});
+                    var items = modules[module]
+                            .filter(isTranslated)
+                            .filter(isNotFuzzy)
+                            .filter(isNotObsolete)
+                            .reduce(mkIdStrMapping, {});
                     var pluralForms = parsePluralForms(po.headers['Plural-Forms']);
                     var data = {
                         module: module,

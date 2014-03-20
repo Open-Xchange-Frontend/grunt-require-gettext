@@ -123,7 +123,7 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length === 3
                             ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2].value) {
+                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2]) {
                                     grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
                                     grunt.verbose.writeln('Skipping gt.ngettext call');
                                     return;
