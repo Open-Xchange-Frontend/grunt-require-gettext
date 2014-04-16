@@ -114,6 +114,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.5
+
+- add fallback for missing Language header in pofile
+
 ### 0.3.4
 
 - fix bug with completely untranslated modules not created at all (only the dictionary should be empty!)
