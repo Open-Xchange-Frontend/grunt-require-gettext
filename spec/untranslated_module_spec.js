@@ -26,4 +26,11 @@ describe('compile po file', function () {
                 });
         });
     });
+
+    describe('with missing language header', function () {
+        it('should fall back to po filename', function () {
+            expect('tmp/build/i18n/test/mySimpleModule.lang_LANG.js').to.be.a.file().and.not.empty;
+            expect('tmp/build/i18n/test/alternativeGTModule.lang_LANG.js').to.be.a.file().and.not.empty;
+        });
+    });
 });

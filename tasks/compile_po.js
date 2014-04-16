@@ -121,6 +121,16 @@ module.exports = function (grunt) {
                     }, {});
                 };
 
+                var getLanguageFrom = function (headers) {
+                    var lang = headers.Language;
+                    if (!lang) {
+                        var path = require('path');
+                        lang = path.basename(poFile, '.po');
+                        grunt.log.warn('No language header provided, falling back to source filename:', lang);
+                    }
+                    return lang;
+                };
+
                 for (var module in modules) {
                     var items = modules[module]
                             .filter(isTranslated)
@@ -130,7 +140,7 @@ module.exports = function (grunt) {
                     var pluralForms = parsePluralForms(po.headers['Plural-Forms']);
                     var data = {
                         module: module,
-                        language: po.headers.Language,
+                        language: getLanguageFrom(po.headers),
                         nplurals: pluralForms.nplurals,
                         plural: pluralForms.plural,
                         dictionary: items
