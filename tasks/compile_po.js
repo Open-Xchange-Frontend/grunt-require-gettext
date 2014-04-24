@@ -125,7 +125,7 @@ module.exports = function (grunt) {
                     var lang = headers.Language;
                     var lang_extension = lang + '_' + lang.toUpperCase();
                     var path = require('path');
-                    if (lang && lang.indexOf('_') < 0 && path.basename(poFile, '.po').indexOf(lang_extension) > 0) {
+                    if (lang && lang.indexOf('_') < 0 && path.basename(poFile, '.po').indexOf(lang_extension) >= 0) {
                         lang += '_' + lang.toUpperCase();
                     }
                     if (!lang || lang.indexOf('_') < 0) {
