@@ -1,7 +1,7 @@
 {
   "name": "grunt-require-gettext",
   "description": "Grunt plugin to process js files and extract calls to gettext that is used with a requirejs gettext module.",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "homepage": "https://github.com/open-xchange-frontend/grunt-require-gettext",
   "author": {
     "name": "Julian Bäume",
@@ -35,7 +35,8 @@
     "chai-fs": "0.0.3",
     "chai-things": "^0.2.0",
     "grunt-contrib-watch": "^0.6.0",
-    "requirejs": "^2.1.11"
+    "requirejs": "^2.1.11",
+    "grunt-bump": "0.0.13"
   },
   "peerDependencies": {
     "grunt": "~0.4.0"

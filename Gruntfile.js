@@ -17,9 +17,16 @@ module.exports = function (grunt) {
                 interrupt: true,
                 spawn: true
             },
+            gruntfile: {
+                options: {
+                    reload: true
+                },
+                files: ['Gruntfile.js'],
+                tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
+            },
             all: {
-                files: ['spec/**/*.*', 'tasks/*.js', 'Gruntfile.js'],
-                tasks: ['jshint', 'create_pot', 'compile_po', 'mochaTest']
+                files: ['spec/**/*.*', 'tasks/*.js'],
+                tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
             }
         },
         jshint: {
@@ -107,6 +114,16 @@ module.exports = function (grunt) {
                     reporter: 'spec'
                 }
             }
+        },
+
+        // More easy release management
+        bump: {
+            options: {
+                files: ['package.json'],
+                commit: false,
+                createTag: false,
+                push: false
+            }
         }
 
     });
@@ -119,6 +136,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-bump');
 
     // Whenever the "test" task is run, first clean the "tmp" dir, then run this
     // plugin's task(s), then test the result.

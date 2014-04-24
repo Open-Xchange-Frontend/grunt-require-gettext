@@ -33,4 +33,16 @@ describe('compile po file', function () {
             expect('tmp/build/i18n/test/alternativeGTModule.lang_LANG.js').to.be.a.file().and.not.empty;
         });
     });
+
+    describe('with abbr. language header', function () {
+        it('and unambiguous filename should silently be extended (fr -> fr_FR)', function () {
+            expect('tmp/build/i18n/test/mySimpleModule.fr_FR.js').to.be.a.file().and.not.empty;
+            expect('tmp/build/i18n/test/alternativeGTModule.fr_FR.js').to.be.a.file().and.not.empty;
+        });
+
+        it('and ambiguous filename should fall back to po filename', function () {
+            expect('tmp/build/i18n/test/mySimpleModule.fr_CA.js').to.be.a.file().and.not.empty;
+            expect('tmp/build/i18n/test/alternativeGTModule.fr_CA.js').to.be.a.file().and.not.empty;
+        });
+    });
 });
