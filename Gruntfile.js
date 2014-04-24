@@ -17,8 +17,15 @@ module.exports = function (grunt) {
                 interrupt: true,
                 spawn: true
             },
+            gruntfile: {
+                options: {
+                    reload: true
+                },
+                files: ['Gruntfile.js'],
+                tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
+            },
             all: {
-                files: ['spec/**/*.*', 'tasks/*.js', 'Gruntfile.js'],
+                files: ['spec/**/*.*', 'tasks/*.js'],
                 tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
             }
         },
