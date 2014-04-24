@@ -19,7 +19,7 @@ module.exports = function (grunt) {
             },
             all: {
                 files: ['spec/**/*.*', 'tasks/*.js', 'Gruntfile.js'],
-                tasks: ['jshint', 'create_pot', 'compile_po', 'mochaTest']
+                tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
             }
         },
         jshint: {
