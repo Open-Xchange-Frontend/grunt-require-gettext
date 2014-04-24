@@ -118,10 +118,12 @@ module.exports = function (grunt) {
 
         // More easy release management
         bump: {
-            files: ['package.json'],
-            commit: false,
-            createTag: false,
-            push: false
+            options: {
+                files: ['package.json'],
+                commit: false,
+                createTag: false,
+                push: false
+            }
         }
 
     });
