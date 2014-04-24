@@ -114,6 +114,14 @@ module.exports = function (grunt) {
                     reporter: 'spec'
                 }
             }
+        },
+
+        // More easy release management
+        bump: {
+            files: ['package.json'],
+            commit: false,
+            createTag: false,
+            push: false
         }
 
     });
