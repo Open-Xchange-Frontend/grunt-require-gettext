@@ -123,10 +123,14 @@ module.exports = function (grunt) {
 
                 var getLanguageFrom = function (headers) {
                     var lang = headers.Language;
-                    if (!lang) {
-                        var path = require('path');
+                    var lang_extension = lang + '_' + lang.toUpperCase();
+                    var path = require('path');
+                    if (lang && lang.indexOf('_') < 0 && path.basename(poFile, '.po').indexOf(lang_extension) > 0) {
+                        lang += '_' + lang.toUpperCase();
+                    }
+                    if (!lang || lang.indexOf('_') < 0) {
                         lang = path.basename(poFile, '.po');
-                        grunt.log.warn('No language header provided, falling back to source filename:', lang);
+                        grunt.log.warn('Ambiguous language header provided, falling back to source filename:', lang);
                     }
                     return lang;
                 };
