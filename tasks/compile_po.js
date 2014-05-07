@@ -34,10 +34,11 @@ module.exports = function (grunt) {
             done(false);
         }
 
-        var last = this.files[0].src.length - 1;
+        var poFilesCount = this.files[0].src.length - 1;
+        var processedPoFiles = 0;
         var showModuleWarning = false;
         var includeFuzzy = options().includeFuzzy;
-        this.files[0].src.forEach(function (poFile, index) {
+        this.files[0].src.forEach(function (poFile) {
             var fromFile;
             var templateFile = options().template;
             if (templateFile && grunt.file.isFile(templateFile)) {
@@ -153,7 +154,8 @@ module.exports = function (grunt) {
                     grunt.file.write(dest + module + '.' + data.language + '.js', _.template(template, data));
                 }
 
-                if (index === last) {
+                processedPoFiles++;
+                if (processedPoFiles === poFilesCount) {
                     if (showModuleWarning) {
                         grunt.verbose.or.warn('Could not load module information for at least one item, run with --verbose to get more info');
                     }
