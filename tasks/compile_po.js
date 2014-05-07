@@ -34,7 +34,7 @@ module.exports = function (grunt) {
             done(false);
         }
 
-        var poFilesCount = this.files[0].src.length - 1;
+        var poFilesCount = this.files[0].src.length;
         var processedPoFiles = 0;
         var showModuleWarning = false;
         var includeFuzzy = options().includeFuzzy;
