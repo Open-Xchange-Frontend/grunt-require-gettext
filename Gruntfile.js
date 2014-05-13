@@ -25,7 +25,7 @@ module.exports = function (grunt) {
                 tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
             },
             all: {
-                files: ['spec/**/*.*', 'tasks/*.js'],
+                files: ['spec/**/*.*', 'lib/*.js', 'tasks/*.js'],
                 tasks: ['clean', 'jshint', 'create_pot', 'compile_po', 'mochaTest']
             }
         },
@@ -35,6 +35,7 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
+                'lib/*.js',
                 'tasks/*.js'
             ],
             specs: {
