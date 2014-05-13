@@ -79,5 +79,20 @@ describe('extract comments above translated strings', function () {
                 done();
             });
         });
+        it('should extract comments in the same line as the gt call', function (done) {
+            PO.load('tmp/i18n/simple.pot', function (err, po) {
+                var item = findString('B', po.items);
+                expect(item.extractedComments).to.contain('Bytes');
+                expect(item.extractedComments).to.contain('another gt comment for Bytes');
+
+                var item = findString('GB', po.items);
+                expect(item.extractedComments).to.contain('Gigabytes');
+                expect(item.extractedComments).not.to.contain('Megabytes');
+
+                var item = findString('YB', po.items);
+                expect(item.extractedComments).to.contain('Yottabytes');
+                done();
+            });
+        });
     });
 });

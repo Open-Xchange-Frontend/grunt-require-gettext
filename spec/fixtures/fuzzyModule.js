@@ -12,5 +12,18 @@ define('fuzzyModule', [
 
     console.log(gt('A string from a fuzzy module'));
     console.log(gt.format(gt.ngettext('%1$d Minute', '%1$d Minutes', item.value), gt.noI18n(item.value)));
+
+    //some strings in front of the gt call (same line)
+    //#. another gt comment for Bytes
+    var n_size = [/*#. Bytes*/      gt('B'),
+                  /*#. Kilobytes*/  gt('KB'),
+                  /*#. Megabytes*/  gt('MB'),
+                  /*#. Gigabytes*/  gt('GB'),
+                  /*#. Terabytes*/  gt('TB'),
+                  /*#. Petabytes*/  gt('PB'),
+                  /*#. Exabytes*/   gt('EB'),
+                  /*#. Zettabytes*/ gt('ZB'),
+                  /*#. Yottabytes*/ gt('YB')];
+
     return {}
 });
