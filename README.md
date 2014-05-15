@@ -114,6 +114,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.9
+
+- add support for i18n developer comments directly in front of gt call
+
 ### 0.3.8
 
 - fix bug in compile_po not compiling the last po file in the file list
