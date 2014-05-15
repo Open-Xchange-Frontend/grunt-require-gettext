@@ -23,22 +23,48 @@ module.exports = function (grunt) {
                 }
             }
         }
-
-        function getComment(ast, options) {
-            var commentObj = ast.comments.filter(function (comment) {
-                return comment.loc.end.line === options.ends;
-            })[0];
-
-            if (commentObj) {
-                // call getComment recursively to support multiple one line comments above the gettext call
-                // Note: the \n that will be in front of the result string will be ignored during comment
-                // parsing
-                return (getComment(ast, {ends: options.ends - 1}) || '') + '\n' + commentObj.value;
-            }
-            return null;
+        function isBetweenTokens(comment, prevToken, token) {
+            return comment.range[0] >= prevToken.range[1] && comment.range[1] <= token.range[0];
         }
 
-        var syntax = esprima.parse(grunt.file.read(fileName), {comment: true, loc: true});
+        function getComment(ast, node) {
+            var tokenIndex;
+            var currentIndex, min = 0, max = ast.tokens.length;
+            while (tokenIndex === undefined) {
+                currentIndex = Math.floor((min + max) / 2);
+                if (ast.tokens[currentIndex].loc.start.line < node.loc.start.line) {
+                    min = currentIndex;
+                    continue;
+                } else if (ast.tokens[currentIndex].loc.start.line > node.loc.start.line) {
+                    max = currentIndex;
+                    continue;
+                } else if (ast.tokens[currentIndex].loc.start.column < node.loc.start.column) {
+                    min = currentIndex;
+                    continue;
+                } else if (ast.tokens[currentIndex].loc.start.column > node.loc.start.column) {
+                    max = currentIndex;
+                    continue;
+                }
+                tokenIndex = currentIndex;
+            }
+            while (ast.tokens[currentIndex].loc.start.line === node.loc.start.line) {
+                //use currentIndex variable to get the first index in a line
+                currentIndex--;
+            }
+
+            var commentObj = ast.comments.filter(function (comment) {
+                var commentBeforeToken = isBetweenTokens(comment, ast.tokens[tokenIndex - 1], ast.tokens[tokenIndex]);
+                var commentInLinesAbove = isBetweenTokens(comment, ast.tokens[currentIndex], ast.tokens[currentIndex + 1]);
+
+                return (commentBeforeToken || commentInLinesAbove);
+            }).map(function (commentInRange) {
+                return commentInRange.value;
+            }).join('\n');
+
+            return commentObj;
+        }
+
+        var syntax = esprima.parse(grunt.file.read(fileName), {comment: true, loc: true, tokens: true, range: true});
         var items;
 
         walkTree(syntax, function (node) {
@@ -87,7 +113,7 @@ module.exports = function (grunt) {
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
-                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                    comment: getComment(syntax, node)
                                 });
                             } else if (
                                 node !== null &&
@@ -111,7 +137,7 @@ module.exports = function (grunt) {
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
-                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                    comment: getComment(syntax, node)
                                 });
                             } else if (
                                 node !== null &&
@@ -135,7 +161,7 @@ module.exports = function (grunt) {
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
-                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                    comment: getComment(syntax, node)
                                 });
                             } else if (
                                 node !== null &&
@@ -160,7 +186,7 @@ module.exports = function (grunt) {
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
-                                    comment: getComment(syntax, {ends: node.loc.start.line - 1})
+                                    comment: getComment(syntax, node)
                                 });
                             }
                         });
