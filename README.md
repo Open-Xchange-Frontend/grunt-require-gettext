@@ -114,6 +114,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.4.0
+
+- add support for statically evaluable string arguments for gt calls
+- gt calls that can not be evaluated will now fail the task with a warning
+- add support for define.async extension of requirejs
+
 ### 0.3.9
 
 - add support for i18n developer comments directly in front of gt call

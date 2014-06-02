@@ -64,8 +64,123 @@ module.exports = function (grunt) {
             return commentObj;
         }
 
-        var syntax = esprima.parse(grunt.file.read(fileName), {comment: true, loc: true, tokens: true, range: true});
+        function tryEval(code) {
+            var val;
+            try {
+                val = eval(code);
+            } catch (e) {
+                grunt.log.warn(e + ' - while statically evaluating code: ' + code);
+            }
+            return val;
+        }
+
+        var code = grunt.file.read(fileName);
+        var syntax = esprima.parse(code, {comment: true, loc: true, tokens: true, range: true});
         var items;
+        var handleGtCall = function (node, gtName, module) {
+            if (node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.name === gtName &&
+                node['arguments'] !== null &&
+                node['arguments'].length
+            ) {
+                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                if (!msgId) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgId: msgId.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            } else if (
+                node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object.name === gtName &&
+                node.callee.property.name === 'pgettext' &&
+                node['arguments'] !== null &&
+                node['arguments'].length === 2
+            ) {
+                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                if (!msgId || !msgContext) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgId: msgId.trim(),
+                    msgContext: msgContext.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            } else if (
+                node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object.name === gtName &&
+                node.callee.property.name === 'ngettext' &&
+                node['arguments'] !== null &&
+                node['arguments'].length === 3
+            ) {
+                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                var msgIdPlural = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                if (!msgId || !msgIdPlural || !node['arguments'][2]) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node  in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgId: msgId.trim(),
+                    msgIdPlural: msgIdPlural.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            } else if (
+                node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object.name === gtName &&
+                node.callee.property.name === 'npgettext' &&
+                node['arguments'] !== null &&
+                node['arguments'].length === 4
+            ) {
+                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                var msgIdPlural = node['arguments'][2].value || tryEval(code.slice(node['arguments'][2].range[0], node['arguments'][2].range[1]));
+                if (!msgContext || !msgId || !msgIdPlural || !node['arguments'][3]) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgContext: msgContext.trim(),
+                    msgId: msgId.trim(),
+                    msgIdPlural: msgIdPlural.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            }
+        };
 
         walkTree(syntax, function (node) {
             if (node !== null &&
@@ -73,8 +188,8 @@ module.exports = function (grunt) {
                 node.callee !== null &&
                 node.callee.name === 'define' &&
                 node['arguments'] !== null &&
-                node['arguments'].length > 2
-            ) {
+                node['arguments'].length > 2)
+            {
                 node['arguments'][1].elements.map(function (el, index) {
                     if (el.value.substr(0, 8) === 'gettext!') {
                         var param = node['arguments'][2].params[index];
@@ -95,100 +210,41 @@ module.exports = function (grunt) {
 
                     if (node['arguments'][2].type === 'FunctionExpression') {
                         walkTree(node['arguments'][2], function (node) {
-                            if (node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.name === gtName &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length
-                            ) {
-                                if (!node['arguments'][0].value) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'][0], null, 4));
-                                    grunt.verbose.writeln('Skipping gt call');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgId: node['arguments'][0].value.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            } else if (
-                                node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.type === 'MemberExpression' &&
-                                node.callee.object.name === gtName &&
-                                node.callee.property.name === 'pgettext' &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length === 2
-                            ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
-                                    grunt.verbose.writeln('Skipping gt.pgettext call');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgId: node['arguments'][1].value.trim(),
-                                    msgContext: node['arguments'][0].value.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            } else if (
-                                node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.type === 'MemberExpression' &&
-                                node.callee.object.name === gtName &&
-                                node.callee.property.name === 'ngettext' &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length === 3
-                            ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2]) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
-                                    grunt.verbose.writeln('Skipping gt.ngettext call');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgId: node['arguments'][0].value.trim(),
-                                    msgIdPlural: node['arguments'][1].value.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            } else if (
-                                node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.type === 'MemberExpression' &&
-                                node.callee.object.name === gtName &&
-                                node.callee.property.name === 'npgettext' &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length === 4
-                            ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2].value || !node['arguments'][2].value) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
-                                    grunt.verbose.writeln('Skipping gt.npgettext call');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgContext: node['arguments'][0].value.trim(),
-                                    msgId: node['arguments'][1].value.trim(),
-                                    msgIdPlural: node['arguments'][2].value.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            }
+                            handleGtCall(node, gtName, module);
+                        });
+                    }
+                });
+            } else if (node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object !== null &&
+                node.callee.object.name === 'define' &&
+                node.callee.property.name === 'async' &&
+                node['arguments'] !== null &&
+                node['arguments'].length > 2)
+            {
+                node['arguments'][1].elements.map(function (el, index) {
+                    if (el.value.substr(0, 8) === 'gettext!') {
+                        var param = node['arguments'][2].params[index];
+                        if (!param) {
+                            grunt.log.warn('Unused require-gettext module call in', fileName);
+                            return;
+                        }
+                        return {
+                            name: param.name,
+                            module: el.value.substr(8)
+                        };
+                    }
+                }).filter(function (arg) {
+                    return arg !== undefined;
+                }).forEach(function (obj) {
+                    var gtName = obj.name;
+                    var module = obj.module;
+
+                    if (node['arguments'][2].type === 'FunctionExpression') {
+                        walkTree(node['arguments'][2], function (node) {
+                            handleGtCall(node, gtName, module);
                         });
                     }
                 });
