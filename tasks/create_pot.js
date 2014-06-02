@@ -64,7 +64,18 @@ module.exports = function (grunt) {
             return commentObj;
         }
 
-        var syntax = esprima.parse(grunt.file.read(fileName), {comment: true, loc: true, tokens: true, range: true});
+        function tryEval(code) {
+            var val;
+            try {
+                val = eval(code);
+            } catch (e) {
+                grunt.log.warn(e + ' - while statically evaluating code: ' + code);
+            }
+            return val;
+        }
+
+        var code = grunt.file.read(fileName);
+        var syntax = esprima.parse(code, {comment: true, loc: true, tokens: true, range: true});
         var items;
 
         walkTree(syntax, function (node) {
@@ -102,14 +113,15 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length
                             ) {
-                                if (!node['arguments'][0].value) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'][0], null, 4));
-                                    grunt.verbose.writeln('Skipping gt call');
+                                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                                if (!msgId) {
+                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                                     return;
                                 }
                                 items = items || [];
                                 items.push({
-                                    msgId: node['arguments'][0].value.trim(),
+                                    msgId: msgId.trim(),
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
@@ -125,15 +137,17 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length === 2
                             ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
-                                    grunt.verbose.writeln('Skipping gt.pgettext call');
+                                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                                if (!msgId || !msgContext) {
+                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                                     return;
                                 }
                                 items = items || [];
                                 items.push({
-                                    msgId: node['arguments'][1].value.trim(),
-                                    msgContext: node['arguments'][0].value.trim(),
+                                    msgId: msgId.trim(),
+                                    msgContext: msgContext.trim(),
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
@@ -149,15 +163,17 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length === 3
                             ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2]) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
-                                    grunt.verbose.writeln('Skipping gt.ngettext call');
+                                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                                var msgIdPlural = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                                if (!msgId || !msgIdPlural || !node['arguments'][2]) {
+                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                                    grunt.fail.warn('Could not read node  in file: ' + fileName + ' use --verbose for more info');
                                     return;
                                 }
                                 items = items || [];
                                 items.push({
-                                    msgId: node['arguments'][0].value.trim(),
-                                    msgIdPlural: node['arguments'][1].value.trim(),
+                                    msgId: msgId.trim(),
+                                    msgIdPlural: msgIdPlural.trim(),
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,
@@ -173,16 +189,19 @@ module.exports = function (grunt) {
                                 node['arguments'] !== null &&
                                 node['arguments'].length === 4
                             ) {
-                                if (!node['arguments'][0].value || !node['arguments'][1].value || !node['arguments'][2].value || !node['arguments'][2].value) {
-                                    grunt.log.debug('Could not read node ' + JSON.stringify(node['arguments'], null, 4));
-                                    grunt.verbose.writeln('Skipping gt.npgettext call');
+                                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                                var msgIdPlural = node['arguments'][2].value || tryEval(code.slice(node['arguments'][2].range[0], node['arguments'][2].range[1]));
+                                if (!msgContext || !msgId || !msgIdPlural || !node['arguments'][3]) {
+                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                                     return;
                                 }
                                 items = items || [];
                                 items.push({
-                                    msgContext: node['arguments'][0].value.trim(),
-                                    msgId: node['arguments'][1].value.trim(),
-                                    msgIdPlural: node['arguments'][2].value.trim(),
+                                    msgContext: msgContext.trim(),
+                                    msgId: msgId.trim(),
+                                    msgIdPlural: msgIdPlural.trim(),
                                     module: module,
                                     fileName: fileName,
                                     line: node.loc.start.line,

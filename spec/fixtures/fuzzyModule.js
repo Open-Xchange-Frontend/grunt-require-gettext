@@ -25,5 +25,11 @@ define('fuzzyModule', [
                   /*#. Zettabytes*/ gt('ZB'),
                   /*#. Yottabytes*/ gt('YB')];
 
+    console.log(gt('A ' + 'custom ' + 'concatenated ' +
+                   'string ' + 'to ' + 'support multiple lines'));
+    console.log(gt.ngettext('%1$d ' + 'thing', '%1$d ' + 'things', item.value));
+    console.log(gt.pgettext('my context', 'concat ' + 'pgettext'));
+    console.log(gt.npgettext('my context', 'with %1$d ' + 'thing', 'with %1$d ' + 'things', item.value));
+
     return {}
 });
