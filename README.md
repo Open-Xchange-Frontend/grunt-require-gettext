@@ -114,6 +114,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.10
+
+- add support for statically evaluable string arguments for gt calls
+- add support for define.async extension of requirejs
+- de-duplicate extracted comments (same comment might be extracted from different places)
+
 ### 0.3.9
 
 - add support for i18n developer comments directly in front of gt call
