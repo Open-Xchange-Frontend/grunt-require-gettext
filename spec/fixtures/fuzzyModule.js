@@ -31,5 +31,12 @@ define('fuzzyModule', [
     console.log(gt.pgettext('my context', 'concat ' + 'pgettext'));
     console.log(gt.npgettext('my context', 'with %1$d ' + 'thing', 'with %1$d ' + 'things', item.value));
 
+    console.log(
+        //#. %1$s is the given name
+        //#. %2$s is the family name
+        //#, c-format
+        gt('Welcome, %1$s %2$s!', firstName, lastName)
+    );
+
     return {}
 });
