@@ -87,6 +87,10 @@ module.exports = function (grunt) {
             ) {
                 var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
                 if (!msgId) {
+                    if (getComment(syntax, node).indexOf('#, dynamic') >= 0) {
+                        grunt.verbose.warn('Ignoring gt.pgettext call with dynamic flag set.');
+                        return;
+                    }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
                     grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                     return;
@@ -112,6 +116,10 @@ module.exports = function (grunt) {
                 var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
                 var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
                 if (!msgId || !msgContext) {
+                    if (getComment(syntax, node).indexOf('#, dynamic') >= 0) {
+                        grunt.verbose.warn('Ignoring gt.pgettext call with dynamic flag set.');
+                        return;
+                    }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
                     grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                     return;
@@ -138,6 +146,10 @@ module.exports = function (grunt) {
                 var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
                 var msgIdPlural = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
                 if (!msgId || !msgIdPlural || !node['arguments'][2]) {
+                    if (getComment(syntax, node).indexOf('#, dynamic') >= 0) {
+                        grunt.verbose.warn('Ignoring gt.pgettext call with dynamic flag set.');
+                        return;
+                    }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
                     grunt.fail.warn('Could not read node  in file: ' + fileName + ' use --verbose for more info');
                     return;
@@ -165,6 +177,10 @@ module.exports = function (grunt) {
                 var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
                 var msgIdPlural = node['arguments'][2].value || tryEval(code.slice(node['arguments'][2].range[0], node['arguments'][2].range[1]));
                 if (!msgContext || !msgId || !msgIdPlural || !node['arguments'][3]) {
+                    if (getComment(syntax, node).indexOf('#, dynamic') >= 0) {
+                        grunt.verbose.warn('Ignoring gt.pgettext call with dynamic flag set.');
+                        return;
+                    }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
                     grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                     return;
