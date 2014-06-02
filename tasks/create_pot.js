@@ -77,6 +77,110 @@ module.exports = function (grunt) {
         var code = grunt.file.read(fileName);
         var syntax = esprima.parse(code, {comment: true, loc: true, tokens: true, range: true});
         var items;
+        var handleGtCall = function (node, gtName, module) {
+            if (node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.name === gtName &&
+                node['arguments'] !== null &&
+                node['arguments'].length
+            ) {
+                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                if (!msgId) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgId: msgId.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            } else if (
+                node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object.name === gtName &&
+                node.callee.property.name === 'pgettext' &&
+                node['arguments'] !== null &&
+                node['arguments'].length === 2
+            ) {
+                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                if (!msgId || !msgContext) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgId: msgId.trim(),
+                    msgContext: msgContext.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            } else if (
+                node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object.name === gtName &&
+                node.callee.property.name === 'ngettext' &&
+                node['arguments'] !== null &&
+                node['arguments'].length === 3
+            ) {
+                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                var msgIdPlural = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                if (!msgId || !msgIdPlural || !node['arguments'][2]) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node  in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgId: msgId.trim(),
+                    msgIdPlural: msgIdPlural.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            } else if (
+                node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object.name === gtName &&
+                node.callee.property.name === 'npgettext' &&
+                node['arguments'] !== null &&
+                node['arguments'].length === 4
+            ) {
+                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
+                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
+                var msgIdPlural = node['arguments'][2].value || tryEval(code.slice(node['arguments'][2].range[0], node['arguments'][2].range[1]));
+                if (!msgContext || !msgId || !msgIdPlural || !node['arguments'][3]) {
+                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
+                    return;
+                }
+                items = items || [];
+                items.push({
+                    msgContext: msgContext.trim(),
+                    msgId: msgId.trim(),
+                    msgIdPlural: msgIdPlural.trim(),
+                    module: module,
+                    fileName: fileName,
+                    line: node.loc.start.line,
+                    comment: getComment(syntax, node)
+                });
+            }
+        };
 
         walkTree(syntax, function (node) {
             if (node !== null &&
@@ -106,108 +210,7 @@ module.exports = function (grunt) {
 
                     if (node['arguments'][2].type === 'FunctionExpression') {
                         walkTree(node['arguments'][2], function (node) {
-                            if (node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.name === gtName &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length
-                            ) {
-                                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
-                                if (!msgId) {
-                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
-                                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgId: msgId.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            } else if (
-                                node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.type === 'MemberExpression' &&
-                                node.callee.object.name === gtName &&
-                                node.callee.property.name === 'pgettext' &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length === 2
-                            ) {
-                                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
-                                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
-                                if (!msgId || !msgContext) {
-                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
-                                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgId: msgId.trim(),
-                                    msgContext: msgContext.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            } else if (
-                                node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.type === 'MemberExpression' &&
-                                node.callee.object.name === gtName &&
-                                node.callee.property.name === 'ngettext' &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length === 3
-                            ) {
-                                var msgId = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
-                                var msgIdPlural = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
-                                if (!msgId || !msgIdPlural || !node['arguments'][2]) {
-                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
-                                    grunt.fail.warn('Could not read node  in file: ' + fileName + ' use --verbose for more info');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgId: msgId.trim(),
-                                    msgIdPlural: msgIdPlural.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            } else if (
-                                node !== null &&
-                                node.type === 'CallExpression' &&
-                                node.callee !== null &&
-                                node.callee.type === 'MemberExpression' &&
-                                node.callee.object.name === gtName &&
-                                node.callee.property.name === 'npgettext' &&
-                                node['arguments'] !== null &&
-                                node['arguments'].length === 4
-                            ) {
-                                var msgContext = node['arguments'][0].value || tryEval(code.slice(node['arguments'][0].range[0], node['arguments'][0].range[1]));
-                                var msgId = node['arguments'][1].value || tryEval(code.slice(node['arguments'][1].range[0], node['arguments'][1].range[1]));
-                                var msgIdPlural = node['arguments'][2].value || tryEval(code.slice(node['arguments'][2].range[0], node['arguments'][2].range[1]));
-                                if (!msgContext || !msgId || !msgIdPlural || !node['arguments'][3]) {
-                                    grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
-                                    grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
-                                    return;
-                                }
-                                items = items || [];
-                                items.push({
-                                    msgContext: msgContext.trim(),
-                                    msgId: msgId.trim(),
-                                    msgIdPlural: msgIdPlural.trim(),
-                                    module: module,
-                                    fileName: fileName,
-                                    line: node.loc.start.line,
-                                    comment: getComment(syntax, node)
-                                });
-                            }
+                            handleGtCall(node, gtName, module);
                         });
                     }
                 });
