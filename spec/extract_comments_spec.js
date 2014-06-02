@@ -94,5 +94,17 @@ describe('extract comments above translated strings', function () {
                 done();
             });
         });
+        it('should not extract exactly the same comment from different file twice', function (done) {
+            PO.load('tmp/i18n/simple.pot', function (err, po) {
+                var item = findString('Welcome, %1$s %2$s!', po.items);
+                expect(item.extractedComments.filter(function (comment) {
+                    return comment === '%1$s is the given name';
+                })).to.have.length(1);
+                expect(item.extractedComments.filter(function (comment) {
+                    return comment === '%2$s is the family name';
+                })).to.have.length(1);
+                done();
+            });
+        });
     });
 });

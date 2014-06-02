@@ -298,7 +298,7 @@ module.exports = function (grunt) {
                     if (item.comment) {
                         var commentItem = PO.parse('msgid ""\nmsgstr ""\n\n' + item.comment + '\nmsgid "temp"\nmsgstr""\n').items[0];
                         _(poItem.flags).extend(commentItem.flags);
-                        poItem.extractedComments = [].concat(poItem.extractedComments, commentItem.extractedComments);
+                        poItem.extractedComments = _.uniq([].concat(poItem.extractedComments, commentItem.extractedComments));
                     }
                 });
                 return acc;
