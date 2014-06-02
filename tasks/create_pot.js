@@ -188,8 +188,42 @@ module.exports = function (grunt) {
                 node.callee !== null &&
                 node.callee.name === 'define' &&
                 node['arguments'] !== null &&
-                node['arguments'].length > 2
-            ) {
+                node['arguments'].length > 2)
+            {
+                node['arguments'][1].elements.map(function (el, index) {
+                    if (el.value.substr(0, 8) === 'gettext!') {
+                        var param = node['arguments'][2].params[index];
+                        if (!param) {
+                            grunt.log.warn('Unused require-gettext module call in', fileName);
+                            return;
+                        }
+                        return {
+                            name: param.name,
+                            module: el.value.substr(8)
+                        };
+                    }
+                }).filter(function (arg) {
+                    return arg !== undefined;
+                }).forEach(function (obj) {
+                    var gtName = obj.name;
+                    var module = obj.module;
+
+                    if (node['arguments'][2].type === 'FunctionExpression') {
+                        walkTree(node['arguments'][2], function (node) {
+                            handleGtCall(node, gtName, module);
+                        });
+                    }
+                });
+            } else if (node !== null &&
+                node.type === 'CallExpression' &&
+                node.callee !== null &&
+                node.callee.type === 'MemberExpression' &&
+                node.callee.object !== null &&
+                node.callee.object.name === 'define' &&
+                node.callee.property.name === 'async' &&
+                node['arguments'] !== null &&
+                node['arguments'].length > 2)
+            {
                 node['arguments'][1].elements.map(function (el, index) {
                     if (el.value.substr(0, 8) === 'gettext!') {
                         var param = node['arguments'][2].params[index];
