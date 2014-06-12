@@ -69,7 +69,7 @@ module.exports = function (grunt) {
             try {
                 val = eval(code);
             } catch (e) {
-                grunt.log.warn(e + ' - while statically evaluating code: ' + code);
+                grunt.verbose.warn(e + ' - while statically evaluating code: ' + code);
             }
             return val;
         }
