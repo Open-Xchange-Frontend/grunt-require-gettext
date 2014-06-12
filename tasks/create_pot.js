@@ -92,6 +92,7 @@ module.exports = function (grunt) {
                         return;
                     }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.log.error('Override this by adding a "dynamic" flag to the translator comments');
                     grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                     return;
                 }
@@ -121,6 +122,7 @@ module.exports = function (grunt) {
                         return;
                     }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.log.error('Override this by adding a "dynamic" flag to the translator comments');
                     grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                     return;
                 }
@@ -151,6 +153,7 @@ module.exports = function (grunt) {
                         return;
                     }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.log.error('Override this by adding a "dynamic" flag to the translator comments');
                     grunt.fail.warn('Could not read node  in file: ' + fileName + ' use --verbose for more info');
                     return;
                 }
@@ -182,6 +185,7 @@ module.exports = function (grunt) {
                         return;
                     }
                     grunt.verbose.warn(JSON.stringify(node['arguments'], null, 4));
+                    grunt.log.error('Override this by adding a "dynamic" flag to the translator comments');
                     grunt.fail.warn('Could not read node in file: ' + fileName + ' use --verbose for more info');
                     return;
                 }
