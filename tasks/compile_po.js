@@ -36,7 +36,6 @@ module.exports = function (grunt) {
 
         var poFilesCount = this.files[0].src.length;
         var processedPoFiles = 0;
-        var showModuleWarning = false;
         var includeFuzzy = options().includeFuzzy;
         this.files[0].src.forEach(function (poFile) {
             var fromFile;
@@ -78,13 +77,15 @@ module.exports = function (grunt) {
                     });
 
                     if (itemModules.length === 0) {
-                        if (!(isTranslated(item) || isNotFuzzy(item) || isNotObsolete(item))) {
+                        if (isTranslated(item) && isNotFuzzy(item) && !item.obsolete) {
                             //message will not be filtered by one of the above rules, warn the user!
-                            showModuleWarning = true;
+                            grunt.log.warn('Could not load module information for', item);
+                            grunt.log.warn('in file', poFile);
+                            grunt.fail.warn('Could not load module information for at least one item.');
                         }
-                        grunt.verbose.warn('Ignoring item (no module found): ' + item.msgid);
-                        grunt.verbose.warn(item);
-                        grunt.verbose.warn('in file', poFile);
+                        grunt.log.debug('Ignoring item (no module found): ' + item.msgid);
+                        grunt.log.debug(item);
+                        grunt.log.debug('in file', poFile);
                         return;
                     }
                     itemModules.forEach(function (module) {
@@ -156,9 +157,6 @@ module.exports = function (grunt) {
 
                 processedPoFiles++;
                 if (processedPoFiles === poFilesCount) {
-                    if (showModuleWarning) {
-                        grunt.verbose.or.warn('Could not load module information for at least one item, run with --verbose to get more info');
-                    }
                     done(true);
                 }
             });
