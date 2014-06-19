@@ -45,7 +45,7 @@
     "gruntplugin"
   ],
   "dependencies": {
-    "pofile": "^0.2.7",
+    "pofile": "^0.2.10",
     "esprima": "~1.0.4",
     "lodash": "~2.4.1"
   }
