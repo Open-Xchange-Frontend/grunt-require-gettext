@@ -91,7 +91,6 @@ module.exports = function (grunt) {
                     itemModules.forEach(function (module) {
                         module = module.substr(7);
 
-                        module = module;
                         if (!modules[module]) {
                             modules[module] = [];
                         }
