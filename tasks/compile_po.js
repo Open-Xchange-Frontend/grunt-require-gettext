@@ -14,6 +14,7 @@ module.exports = function (grunt) {
         var done = this.async();
         var PO = require('pofile');
         var _ = require('lodash');
+        var extractLib = require('../lib/extract')(grunt);
         var dest = this.files[0].dest;
         var options = this.options;
         var isNotFuzzy = function (poItem) {
@@ -97,15 +98,8 @@ module.exports = function (grunt) {
                         modules[module].push(item);
                     });
                 });
-                var mkKey = function (poItem) {
-                    var key = poItem.msgctxt ? poItem.msgctxt + '\x00' + poItem.msgid : poItem.msgid;
-                    if (poItem.msgid_plural) {
-                        key += '\x01' + poItem.msgid_plural;
-                    }
-                    return key;
-                };
                 var mkIdStrMapping = function (acc, poItem) {
-                    acc[mkKey(poItem)] = poItem.msgstr;
+                    acc[extractLib.mkKey(poItem)] = poItem.msgstr;
                     return acc;
                 };
 
