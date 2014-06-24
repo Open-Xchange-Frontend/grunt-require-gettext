@@ -77,6 +77,9 @@ msgstr "übersetze mich!"
 msgid "translate me, too! Alternatively!"
 msgstr "übersetze auch mich! Alternativ!"
 
+msgid "String without a module reference"
+msgstr "Zeichenkette ohne Modulreferenz"
+
 #~
 #~ #: module:test/alternativeGTModule
 #~ msgid "unused message"
