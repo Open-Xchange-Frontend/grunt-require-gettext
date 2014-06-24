@@ -48,7 +48,7 @@ module.exports = function (grunt) {
 
         // Before generating any new files, remove any previously-created files.
         clean: {
-            tests: ['tmp']
+            tests: ['tmp/', '.cache/']
         },
 
         // Configuration to be run (and then tested).
@@ -69,7 +69,8 @@ module.exports = function (grunt) {
                     'tmp/i18n/simple.pot': [
                         'spec/fixtures/simpleModule.js',
                         'spec/fixtures/defineAsync.js',
-                        'spec/fixtures/fuzzyModule.js'
+                        'spec/fixtures/fuzzyModule.js',
+                        'spec/fixtures/veryNewModule.js'
                     ]
                 }
             },
