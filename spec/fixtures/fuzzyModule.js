@@ -11,6 +11,7 @@ define('fuzzyModule', [
     'use strict';
 
     console.log(gt('A string from a fuzzy module'));
+    console.log(gt('A string with\n \\n in it'));
     console.log(gt.format(gt.ngettext('%1$d Minute', '%1$d Minutes', item.value), gt.noI18n(item.value)));
 
     //some strings in front of the gt call (same line)
