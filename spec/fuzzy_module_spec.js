@@ -29,6 +29,9 @@ describe('extract strings', function () {
             //msgid extracted
             expect(po.items).to.contain.a.thing.with.property('msgid', 'A string from a fuzzy module');
         });
+        it('should escape linebreaks', function () {
+            expect(po.items).to.contain.a.thing.with.property('msgid', 'A string with\n \\n in it');
+        });
         it('should find string within gt.format call', function () {
             //msgid extracted
             expect(po.items).to.contain.a.thing.with.property('msgid', '%1$d Minute');
