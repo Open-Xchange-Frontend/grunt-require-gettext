@@ -97,6 +97,7 @@ module.exports = function (grunt) {
         var done = this.async();
         var dest = this.files[0].dest;
         var options = this.options;
+        var includeFuzzy = options().includeFuzzy;
         var isNotFuzzy = function (poItem) {
             return includeFuzzy || !poItem.flags.fuzzy;
         };
@@ -121,7 +122,6 @@ module.exports = function (grunt) {
 
         var poFilesCount = this.files[0].src.length;
         var processedPoFiles = 0;
-        var includeFuzzy = options().includeFuzzy;
         this.files[0].src.forEach(function (poFile) {
             var fromFile;
             var templateFile = options().template;
