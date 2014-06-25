@@ -26,9 +26,12 @@ In your project's Gruntfile, add a section named `compile_po` to the data object
 
 ```js
 grunt.initConfig({
+  options: {
+    //Task-specific options go here
+  },
   compile_po: {
     options: {
-      // Task-specific options go here.
+      // Target-specific options go here.
     },
     your_target: {
       // Target-specific file lists and/or options go here.
@@ -38,6 +41,23 @@ grunt.initConfig({
 ```
 
 ### Options
+
+#### options.cacheDir
+Type: `string`
+Default value: `$(grunt-require-gettext path)/.cache/` (usually node_module/grunt-require-gettext/.cache)
+
+Use `cacheDir` as the directory for reference cache used by compile_po task. Sometimes it's useful to write
+the cache files somewhere else, for more easy access from the project using grunt-require-gettext to extract
+strings. This directory contains pot file(s), that could be sent to translators to create the po files for
+each supported language.
+
+#### options.cacheFile
+Type: `string`
+Default value: `cache.pot`
+
+Use `cacheFile` as the filename of the reference cache used by compile_po task. Sometimes it's useful to write
+the cache files somewhere else, for more easy access from the project using grunt-require-gettext to extract
+strings. This pot file could be sent to translators to create the po files for each supported language.
 
 #### options.includeFuzzy
 Type: `boolean`
