@@ -163,7 +163,11 @@ module.exports = function (grunt) {
                     });
 
                     if (itemModules.length === 0) {
-                        if (isTranslated(item) && isNotFuzzy(item) && !item.obsolete) {
+                        if (isTranslated(item) &&
+                            cachedItems.hasOwnProperty(extractLib.mkKey(item)) &&
+                            isNotFuzzy(item) &&
+                            !item.obsolete
+                        ) {
                             //message will not be filtered by one of the above rules, warn the user!
                             grunt.log.warn('Could not load module information for', item);
                             grunt.log.warn('in file', poFile);

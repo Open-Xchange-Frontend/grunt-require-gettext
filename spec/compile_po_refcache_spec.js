@@ -23,6 +23,15 @@ describe('compile po file', function () {
                 }
             );
         });
+        it('should handle/ignore strings without reference that are not in cache', function (done) {
+            requirejs(
+                ['test/mySimpleModule.de_DE'], function (simple) {
+                    var dict = simple.dictionary;
+                    expect(dict['String (no refs) still in po but removed from sources']).not.to.exist;
+                    done();
+                }
+            );
+        });
         it('should not contain new untranslated strings', function (done) {
             requirejs(
                 ['test/mySimpleModule.de_DE'], function (simple) {
