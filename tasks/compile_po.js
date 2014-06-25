@@ -9,12 +9,92 @@
 'use strict';
 
 module.exports = function (grunt) {
+    var PO = require('pofile');
+    var _ = require('lodash');
+    var extractLib = require('../lib/extract')(grunt);
+
+    function allJSSources() {
+        var targets = _(grunt.config.get('create_pot')).keys();
+        return targets.map(function (target) {
+            var files = grunt.task.normalizeMultiTaskFiles(grunt.config.get('create_pot.' + target));
+            return files[0].src;
+        })
+        .reduce(function (acc, files) {
+            return acc.concat(files);
+        }, []);
+    }
+    function updateCache(cacheDir, cacheFile) {
+        var fs = require('fs');
+        var path = require('path');
+        var cacheMTime = fs.existsSync(path.join(cacheDir, cacheFile)) ? fs.statSync(path.join(cacheDir, cacheFile)).mtime : 0;
+        var extractFromFiles = extractLib.fromFiles;
+        var headers;
+
+        var cachedItems = {};
+        if (grunt.file.exists(path.join(cacheDir, cacheFile))) {
+            var po = PO.parse(grunt.file.read(path.join(cacheDir, cacheFile)));
+            headers = po.headers;
+            po.items.forEach(function (item) {
+                cachedItems[extractLib.mkKey(item)] = item;
+            });
+        }
+        var newItems = extractFromFiles(
+            allJSSources()
+                .map(function (file) {
+                    return {
+                        name: file,
+                        mtime: fs.statSync(file).mtime
+                    };
+                }).filter(function (file) {
+                    return file.mtime > cacheMTime;
+                }).map(function (file) {
+                    return file.name;
+                }));
+
+        if (newItems) {
+            var catalog = new PO();
+            for (var key in newItems) {
+                var item = mergeRefs(newItems[key], cachedItems[key]);
+                cachedItems[key] = item;
+            }
+            for (var key in cachedItems) {
+                catalog.items.push(cachedItems[key]);
+            }
+            catalog.headers = headers || {
+                'Content-Type': 'text/plain; charset=UTF-8',
+                'Content-Transfer-Encoding': '8bit'
+            };
+            grunt.file.write(path.join(cacheDir, cacheFile), catalog.toString());
+        }
+        return cachedItems;
+    }
+
+    function mergeRefs(potItem, poItem) {
+        if (!potItem && !poItem) {
+            grunt.fail.fatal('Can not merge two undefined items');
+            return;
+        } else if (!potItem) {
+            return poItem;
+        } else if (!poItem) {
+            return potItem;
+        }
+        function mkRefsObject(acc, fileRef) {
+            acc[fileRef.replace(/:[0-9]+$/, '')] = fileRef;
+            return acc;
+        }
+
+        var potReferences = potItem.references.reduce(mkRefsObject, {});
+        poItem.references = poItem.references.filter(function (ref) {
+            return !potReferences[ref.replace(/:[0-9]+$/, '')];
+        });
+        potItem.references.forEach(function (ref) {
+            poItem.references.push(ref);
+        });
+        return poItem;
+    }
 
     grunt.registerMultiTask('compile_po', 'Compiles different po files to their corresponding requirejs gettext module.', function () {
         var done = this.async();
-        var PO = require('pofile');
-        var _ = require('lodash');
-        var extractLib = require('../lib/extract')(grunt);
         var dest = this.files[0].dest;
         var options = this.options;
         var isNotFuzzy = function (poItem) {
@@ -34,6 +114,10 @@ module.exports = function (grunt) {
             grunt.fail.fatal('Target (' + dest + ') must be exactly _one_ directory');
             done(false);
         }
+
+        var cacheDir = options().cacheDir || __dirname + '/../.cache/';
+        var cacheFile = options().cacheFile || 'cache.pot';
+        var cachedItems = updateCache(cacheDir, cacheFile);
 
         var poFilesCount = this.files[0].src.length;
         var processedPoFiles = 0;
@@ -69,6 +153,7 @@ module.exports = function (grunt) {
                 var modules = {};
                 po.items
                 .forEach(function (item) {
+                    item = mergeRefs(cachedItems[extractLib.mkKey(item)], item);
                     var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');
                     }).reduce(function (acc, ref) {
@@ -78,7 +163,11 @@ module.exports = function (grunt) {
                     });
 
                     if (itemModules.length === 0) {
-                        if (isTranslated(item) && isNotFuzzy(item) && !item.obsolete) {
+                        if (isTranslated(item) &&
+                            cachedItems.hasOwnProperty(extractLib.mkKey(item)) &&
+                            isNotFuzzy(item) &&
+                            !item.obsolete
+                        ) {
                             //message will not be filtered by one of the above rules, warn the user!
                             grunt.log.warn('Could not load module information for', item);
                             grunt.log.warn('in file', poFile);
