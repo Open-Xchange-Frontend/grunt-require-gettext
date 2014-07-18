@@ -85,7 +85,7 @@ define("<%= module %>.<%= language %>", [], function () {
 <% } %>
         }
     };
-});';
+});
 ```
 
 #### files format
