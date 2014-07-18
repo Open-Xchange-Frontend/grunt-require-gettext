@@ -134,6 +134,16 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.5.0
+
+- IMPORTANT: if a string can not be extracted, task fails with a warning
+- no duplicates in extracted comments any longer
+- better handling of dynamic flag for extracted strings
+- larger refactoring of the extraction code
+- force to update pofile library to get latest bug-fixes in
+- new reference cache for compile_po task
+    -> no need to create_pot and msgmerge to update references in pofile
+
 ### 0.4.0
 
 - add support for statically evaluable string arguments for gt calls
