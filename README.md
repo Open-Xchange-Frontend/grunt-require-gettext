@@ -134,6 +134,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.6.0
+
+- IMPORTANT: semantics of po filename changed
+    - filename is primary source, language header is used as fallback
+- updates of all (dev-)dependencies to latest versions
+
 ### 0.5.0
 
 - IMPORTANT: if a string can not be extracted, task fails with a warning
