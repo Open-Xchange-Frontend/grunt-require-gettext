@@ -1,5 +1,7 @@
 # grunt-require-gettext
 
+[![Build Status](https://travis-ci.org/Open-Xchange-Frontend/grunt-require-gettext.svg?branch=develop)](https://travis-ci.org/Open-Xchange-Frontend/grunt-require-gettext)
+
 > Grunt plugin to process js files and extract calls to gettext that is used with a requirejs gettext module.
 
 ## Getting Started
