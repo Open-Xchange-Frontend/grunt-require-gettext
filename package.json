@@ -24,7 +24,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "node -e 'require(\"grunt\").cli()' '' jshint test"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "^0.10.0",
