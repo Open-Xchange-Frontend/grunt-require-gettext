@@ -27,20 +27,20 @@ describe('compile po file', function () {
         });
     });
 
-    describe('with missing language header', function () {
-        it('should fall back to po filename', function () {
+    describe('with ambiguous filename', function () {
+        it('should language header as language', function () {
             expect('tmp/build/i18n/test/mySimpleModule.lang_LANG.js').to.be.a.file().and.not.empty;
             expect('tmp/build/i18n/test/alternativeGTModule.lang_LANG.js').to.be.a.file().and.not.empty;
         });
     });
 
     describe('with abbr. language header', function () {
-        it('and unambiguous filename should silently be extended (fr -> fr_FR)', function () {
+        it('and unambiguous language header should prefer filename', function () {
             expect('tmp/build/i18n/test/mySimpleModule.fr_FR.js').to.be.a.file().and.not.empty;
             expect('tmp/build/i18n/test/alternativeGTModule.fr_FR.js').to.be.a.file().and.not.empty;
         });
 
-        it('and ambiguous filename should fall back to po filename', function () {
+        it('and ambiguous language header should prefer po filename', function () {
             expect('tmp/build/i18n/test/mySimpleModule.fr_CA.js').to.be.a.file().and.not.empty;
             expect('tmp/build/i18n/test/alternativeGTModule.fr_CA.js').to.be.a.file().and.not.empty;
         });

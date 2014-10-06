@@ -206,15 +206,17 @@ module.exports = function (grunt) {
                 };
 
                 var getLanguageFrom = function (headers) {
-                    var lang = headers.Language;
-                    var lang_extension = lang + '_' + lang.toUpperCase();
                     var path = require('path');
-                    if (lang && lang.indexOf('_') < 0 && path.basename(poFile, '.po').indexOf(lang_extension) >= 0) {
-                        lang += '_' + lang.toUpperCase();
+                    var lang = path.basename(poFile, '.po');
+                    if (lang.indexOf('_') < 0) {
+                        if (headers.Language.indexOf(lang) !== 0) {
+                            grunt.log.warn('Ambiguous filename provided, falling back to language header:', headers.Language);
+                        }
+                        lang = headers.Language;
                     }
                     if (!lang || lang.indexOf('_') < 0) {
-                        lang = path.basename(poFile, '.po');
-                        grunt.log.warn('Ambiguous language header provided, falling back to source filename:', lang);
+                        lang = lang + '_' + lang.toUpperCase();
+                        grunt.log.error('Unable to guess complete language name, found', lang);
                     }
                     return lang;
                 };
