@@ -16,9 +16,15 @@ module.exports = function (grunt) {
         var options = this.options();
 
         this.files.forEach(function (file) {
-            var poItems = extract.fromFiles(file.src.filter(function (srcFile) {
-                return srcFile.substr(-3) === '.js';
-            }), {});
+            var poItems;
+
+            try {
+                poItems = extract.fromFiles(file.src.filter(function (srcFile) {
+                    return srcFile.substr(-3) === '.js';
+                }), {});
+            } catch (e) {
+                grunt.fail.fatal(e);
+            }
 
             if (poItems) {
                 var catalog = new PO();
