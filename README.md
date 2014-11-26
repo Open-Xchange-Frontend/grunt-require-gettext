@@ -140,7 +140,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 - add detection for duplicate msgids
     - create_pot task will fail if duplicate is detected
-    - primary key for items are msgctxt and msgid, nod msgid_plural
+    - primary key for items are msgctxt and msgid, not msgid_plural
 - integrate travis-ci automatic testing
 
 ### 0.6.0
