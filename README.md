@@ -1,5 +1,7 @@
 # grunt-require-gettext
 
+[![Build Status](https://travis-ci.org/Open-Xchange-Frontend/grunt-require-gettext.svg?branch=develop)](https://travis-ci.org/Open-Xchange-Frontend/grunt-require-gettext)
+
 > Grunt plugin to process js files and extract calls to gettext that is used with a requirejs gettext module.
 
 ## Getting Started
@@ -133,6 +135,13 @@ Headers that should be added to the pot file.
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+
+### 0.6.1
+
+- add detection for duplicate msgids
+    - create_pot task will fail if duplicate is detected
+    - primary key for items are msgctxt and msgid, nod msgid_plural
+- integrate travis-ci automatic testing
 
 ### 0.6.0
 

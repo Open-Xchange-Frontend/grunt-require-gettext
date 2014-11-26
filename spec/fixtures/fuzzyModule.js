@@ -39,5 +39,7 @@ define('fuzzyModule', [
         gt('Welcome, %1$s %2$s!', firstName, lastName)
     );
 
+    console.log(gt('Attachment'));
+    console.log(gt('Attachments'));
     return {}
 });
