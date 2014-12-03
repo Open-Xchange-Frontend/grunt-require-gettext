@@ -1,0 +1,13 @@
+# Julian Bäume <julian.baeume@open-xchange.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2014-01-15 14:13+0100\n"
+"Last-Translator: Julian Bäume <julian.baeume@open-xchange.com>\n"
+"Language-Team: German <julian.baeume@open-xchange.com>\n"
+"Language: foo_BAR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"

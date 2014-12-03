@@ -102,7 +102,7 @@ module.exports = function (grunt) {
             return includeFuzzy || !poItem.flags.fuzzy;
         };
         var isTranslated = function (poItem) {
-            return poItem.msgstr.reduce(function (acc, translation) {
+            return poItem.msgstr.length > 0 && poItem.msgstr.reduce(function (acc, translation) {
                 return acc && !!translation;
             }, true);
         };
@@ -151,9 +151,19 @@ module.exports = function (grunt) {
                     done(false);
                 }
                 var modules = {};
-                po.items
-                .forEach(function (item) {
-                    item = mergeRefs(cachedItems[extractLib.mkKey(item)], item);
+                var items = po.items;
+                if (items.length === 0) {
+                    //po file is empty, use all the cached items instead
+                    grunt.log.warn(poFile, 'contains no strings, using all extracted strings instead.');
+                    grunt.log.warn('To get rid of this warning use msgmerge tool to merge everything from the pot into the po file.');
+                    for (var key in cachedItems) {
+                        items.push(cachedItems[key]);
+                    }
+                }
+                items.forEach(function (item) {
+                    if (cachedItems[extractLib.mkKey(item)] !== item) {
+                        item = mergeRefs(cachedItems[extractLib.mkKey(item)], item);
+                    }
                     var itemModules = item.references.map(function (ref) {
                         return ref.split(' ');
                     }).reduce(function (acc, ref) {
