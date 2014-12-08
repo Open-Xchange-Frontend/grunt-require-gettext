@@ -13,6 +13,17 @@ requirejs.config({
 });
 
 describe('compile po file', function () {
+    describe('which is empty', function () {
+        it('should generate module files with empty dictionary', function (done) {
+            expect('tmp/build/i18n/test/mySimpleModule.foo_BAR.js').to.be.a.file().and.not.empty;
+            requirejs(
+                ['test/mySimpleModule.foo_BAR'], function (simple) {
+                    expect(simple.dictionary).to.exist.and.be.empty;
+                    done();
+                }
+            );
+        });
+    });
     describe('using reference cache', function () {
         it('should extract string with module reference missing in po file', function (done) {
             requirejs(

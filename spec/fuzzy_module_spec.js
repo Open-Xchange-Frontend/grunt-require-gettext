@@ -39,6 +39,9 @@ describe('extract strings', function () {
             var item = findString('%1$d Minute', po.items);
             expect(item.msgid_plural).to.equal('%1$d Minutes');
         });
+        it('should not trim msgids', function () {
+            expect(po.items).to.contain.a.thing.with.property('msgid', 'White-space hurray! ');
+        });
 
         describe('should extract statically concatenated strings', function () {
             it('(plain gt call)', function () {
