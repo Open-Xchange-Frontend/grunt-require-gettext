@@ -1,5 +1,12 @@
 ## Release History
 
+### 0.6.2
+
+- allow empty po files (no strings defined)
+    - will create modules for completely empty po files that contains no strings
+    - dictionary of the modules will be empty but files will at least exist
+- fix problem with trailing white-space not being extracted
+
 ### 0.6.1
 
 - add detection for duplicate msgids
