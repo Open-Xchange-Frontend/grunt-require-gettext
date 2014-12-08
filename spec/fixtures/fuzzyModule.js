@@ -41,5 +41,6 @@ define('fuzzyModule', [
 
     console.log(gt('Attachment'));
     console.log(gt('Attachments'));
+    console.log(gt('White-space hurray! '));
     return {}
 });
