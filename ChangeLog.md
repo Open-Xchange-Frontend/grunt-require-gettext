@@ -1,5 +1,17 @@
 ## Release History
 
+### 0.5.1
+
+- allow empty po files (no strings defined)
+    - will create modules for completely empty po files that contains no strings
+    - dictionary of the modules will be empty but files will at least exist
+- fix problem with trailing white-space not being extracted
+- add detection for duplicate msgids
+    - create_pot task will fail if duplicate is detected
+    - primary key for items are msgctxt and msgid, not msgid_plural
+- integrate travis-ci automatic testing
+- updates of all (dev-)dependencies to latest versions
+
 ### 0.5.0
 
 - IMPORTANT: if a string can not be extracted, task fails with a warning
