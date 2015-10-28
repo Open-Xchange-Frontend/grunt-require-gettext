@@ -91,3 +91,9 @@ msgstr "Zeichenkette ohne Referenzen in der po, allerdings aus den Quellen entfe
 #~
 #~ msgid "unused message 2"
 #~ msgstr "ungenutzte Nachricht 2"
+
+#: spec/fixtures/simpleModule.js:1337 module:test/mySimpleModule
+msgid "Partially translated plural string"
+msgid_plural "Partially translated plural strings"
+msgstr[0] "Teilweise übersetzte Pluralzeichenkette"
+
