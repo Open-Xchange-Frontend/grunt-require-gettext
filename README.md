@@ -129,6 +129,14 @@ Default value:
 
 Headers that should be added to the pot file.
 
+#### options.location
+Type: `String`
+Default value: `'full'`
+
+One of the standard Gettext options for `--add-location`: `'full'`, `'file'` or `'none'`. Full includes line numbers, file includes only file names and none omits the location entirely.
+
+Note: `module` is always added and is not influenced by this option.
+
 ### Usage Examples
 
 ## Contributing

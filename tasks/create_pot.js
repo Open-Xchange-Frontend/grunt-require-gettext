@@ -21,7 +21,7 @@ module.exports = function (grunt) {
             try {
                 poItems = extract.fromFiles(file.src.filter(function (srcFile) {
                     return srcFile.substr(-3) === '.js';
-                }), {});
+                }), { location: options.location });
             } catch (e) {
                 grunt.fail.fatal(e);
             }
