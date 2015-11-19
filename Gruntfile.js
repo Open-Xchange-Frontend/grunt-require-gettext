@@ -74,6 +74,22 @@ module.exports = function (grunt) {
                     ]
                 }
             },
+            file_location: {
+                options: {
+                    location: 'file'
+                },
+                files: {
+                    'tmp/i18n/simple_file_location.pot': ['spec/fixtures/simpleModule.js']
+                }
+            },
+            no_location: {
+                options: {
+                    location: 'none'
+                },
+                files: {
+                    'tmp/i18n/simple_no_location.pot': ['spec/fixtures/simpleModule.js']
+                }
+            },
             no_headers: {
                 files: {
                     'tmp/i18n/simple_no_headers.pot': ['spec/fixtures/simpleModule.js']
