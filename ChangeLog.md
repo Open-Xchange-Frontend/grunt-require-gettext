@@ -1,5 +1,11 @@
 ## Release History
 
+### 0.7.0
+
+- Added an option to generate different forms of location comments in create_pot.
+    - useful to avoid unnecessary changes in your VCS (just set to `location` option `"file"` or `"none"`)
+
+
 ### 0.6.2
 
 - allow empty po files (no strings defined)
