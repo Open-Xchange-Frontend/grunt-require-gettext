@@ -53,6 +53,15 @@ describe('compile po file', function () {
                 expect(translation['Box contains %1$d item\x01Box contains %1$d items'][1]).to.equal('Box enthält %1$d Elemente');
                 done();
             });
+            it('should render keys with singualar and plural forms with only one field specified in po file', function () {
+                //this might happen with japanese translations, po file initially contains multiple msg_str entries,
+                //but those are removed by the translators
+                var translation = JSON.parse(grunt.file.read('tmp/build/i18n/custom/test/mySimpleModule.de_DE.js'));
+                var result = translation['Partially translated plural string\x01Partially translated plural strings'];
+                expect(result).to.be.an('array');
+                expect(result.length).to.equal(1);
+                expect(result[0]).to.equal('Teilweise übersetzte Pluralzeichenkette');
+            });
         });
         describe('items with context', function () {
             it('should render keys with singular form only', function (done) {
