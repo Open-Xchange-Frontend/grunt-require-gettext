@@ -39,6 +39,16 @@ define('simpleModule', [
         //#, c-format
         gt('Welcome, %1$s %2$s!', firstName, lastName)
     );
+    console.log(
+        //#. %1$s is the given name
+        //#. %2$s is the family name
+        //#, c-format
+        gt('gt with 2 optional arguments, %1$s %2$s!', firstName, lastName),
+        gt.gettext('gt.gettext with 2 optional arguments, %1$s %2$s!', firstName, lastName),
+        gt.ngettext('gt.ngettext with 2 optional arguments, %1$s %2$s!', 'plural with 2 arguments, %1$s %2$s!', firstName, lastName),
+        gt.pgettext('', 'gt.pgettext with 2 optional arguments, %1$s %2$s!', firstName, lastName),
+        gt.npgettext('', 'gt.npgettext with 2 optional arguments, %1$s %2$s!', 'plural with 2 arguments, %1$s %2$s!', firstName, lastName)
+    );
 
     console.log(gt('A message with fuzzy translation'));
     return true;
