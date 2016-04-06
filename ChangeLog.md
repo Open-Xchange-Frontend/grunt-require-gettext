@@ -1,5 +1,14 @@
 ## Release History
 
+### 0.8.0
+
+- update all dependencies
+    - biggest changes are the switch to grunt@1 and lodash@4
+- add missing support for gt.gettext calls (this somehow slipped through, since forever)
+- fix some warnings in verbose mode (more clear, now)
+- fix failing extraction for empty msgctxt (gt.pgettext('', 'Hello') did not work)
+- add support for optional parameters in addition to the needed ones
+
 ### 0.7.0
 
 - Added an option to generate different forms of location comments in create_pot.
