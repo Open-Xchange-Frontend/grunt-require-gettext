@@ -129,7 +129,7 @@ module.exports = function (grunt) {
                 fromFile = grunt.file.read(templateFile);
             }
             /* jshint multistr: true */
-            var template = fromFile ||
+            var template = _.template(fromFile ||
 'define("<%= module %>.<%= language %>", [], function () {\n\
     return {\n\
         "module": "<%= module %>",\n\
@@ -142,7 +142,7 @@ module.exports = function (grunt) {
 <% } %>\
         }\n\
     };\n\
-});\n';
+});\n');
             /* jshint multistr: false */
 
             PO.load(poFile, function (err, po) {
@@ -246,7 +246,7 @@ module.exports = function (grunt) {
                         dictionary: items
                     };
 
-                    grunt.file.write(dest + module + '.' + data.language + '.js', _.template(template, data));
+                    grunt.file.write(dest + module + '.' + data.language + '.js', template(data));
                 }
 
                 processedPoFiles++;

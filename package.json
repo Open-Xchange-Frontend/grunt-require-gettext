@@ -14,12 +14,7 @@
   "bugs": {
     "url": "https://github.com/open-xchange-frontend/grunt-require-gettext/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/open-xchange-frontend/grunt-require-gettext/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -27,14 +22,14 @@
     "test": "node -e 'require(\"grunt\").cli()'"
   },
   "devDependencies": {
-    "chai": "^1.9.0",
+    "chai": "^1.10.0",
     "chai-fs": "^0.1.0",
     "chai-things": "^0.2.0",
-    "grunt": "^0.4.4",
-    "grunt-bump": "0.0.16",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-watch": "^0.6.0",
+    "grunt": "^1.0.1",
+    "grunt-bump": "^0.7.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-test": "^0.12.1",
     "mocha": "^2.3.3",
     "requirejs": "^2.1.11"
@@ -46,8 +41,8 @@
     "gruntplugin"
   ],
   "dependencies": {
-    "esprima": "^1.2.2",
-    "lodash": "~2.4.1",
-    "pofile": "^0.2.12"
+    "esprima": "^2.7.2",
+    "lodash": "^4.8.2",
+    "pofile": "^1.0.2"
   }
 }
