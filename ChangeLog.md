@@ -1,5 +1,9 @@
 ## Release History
 
+### 0.8.1
+
+- fix compile_po task not creating any modules when extraction throws an exception
+
 ### 0.8.0
 
 - update all dependencies

@@ -38,18 +38,23 @@ module.exports = function (grunt) {
                 cachedItems[extractLib.mkKey(item)] = item;
             });
         }
-        var newItems = extractFromFiles(
-            allJSSources()
-                .map(function (file) {
-                    return {
-                        name: file,
-                        mtime: fs.statSync(file).mtime
-                    };
-                }).filter(function (file) {
-                    return file.mtime > cacheMTime;
-                }).map(function (file) {
-                    return file.name;
-                }));
+        var newItems;
+        try {
+            newItems = extractFromFiles(
+                allJSSources()
+                    .map(function (file) {
+                        return {
+                            name: file,
+                            mtime: fs.statSync(file).mtime
+                        };
+                    }).filter(function (file) {
+                        return file.mtime > cacheMTime;
+                    }).map(function (file) {
+                        return file.name;
+                    }));
+        } catch (e) {
+            grunt.fail.fatal(e);
+        }
 
         if (newItems) {
             var catalog = new PO();
